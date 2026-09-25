@@ -1,0 +1,141 @@
+:root {
+  --main-bg: #0C1628;
+  --secondary-bg: #132438;
+  --card-bg: #1A2C47;
+  --navbar-bg: #0C1628;
+  --primary-yellow: #FFD75A;
+  --yellow-hover: #FFCA3A;
+  --white: #ffffff;
+  --light-p-text: #AAB8CC;
+  --muted-text: #91A4BD;
+  --border: #263B55;
+  --dark-btn: #1B2B46;
+  --icon-blue: #253A56;
+  --success-green: #2ECC71;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  list-style: none;
+  text-decoration: none;
+}
+
+body {
+  background: url(images/eb_home_bg.jpeg) no-repeat right center / cover;
+  min-height: 100vh;
+}
+
+nav {
+  background: #0C1628;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 5%;
+}
+
+.nav-buttons {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo {
+  height: 45px;
+  width: auto;
+}
+
+.btn-start {
+  background: var(--primary-yellow);
+  color: var(--dark-btn);
+  padding: 10px 22px;
+  border-radius: 25px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.btn-login {
+  background: var(--icon-blue);
+  color: var(--white);
+  border: var(--light-p-text) solid 1px;
+  padding: 10px 28px;
+  border-radius: 25px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.btn-start:hover {
+  background: var(--yellow-hover);
+}
+
+.hero {
+  padding: 120px 8%;
+  max-width: 800px;
+}
+
+.hero h1 {
+  font-size: 90px;
+  font-family: 'Jua', sans-serif;
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -2px;
+  margin-bottom: 15px;
+  color: var(--white);
+}
+
+.hero h1 span {
+  color: var(--primary-yellow);
+}
+
+.hero p {
+  font-size: 20px;
+  font-family: 'Nunito', sans-serif;
+  color: var(--muted-text);
+  margin-bottom: 20px;
+}
+
+.hero-btns {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  margin-top: 25px;
+}
+
+.hero-explore {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--icon-blue);
+  color: var(--white);
+  border: var(--light-p-text) solid 1px;
+  padding: 12px 24px;
+  border-radius: 25px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 18px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.hero-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--primary-yellow);
+  color: var(--dark-btn);
+  padding: 12px 24px;
+  border-radius: 25px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 18px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.hero-btn:hover {
+  background: var(--yellow-hover);
+
+}
