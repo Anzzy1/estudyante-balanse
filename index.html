@@ -14,7 +14,7 @@
         <img src="images/eb_home_logo.jpeg" alt="Estudyante Balanse" class="logo">
         <div class="nav-buttons">
           <a href="#" class="btn-login">Login</a>
-          <a href="#" class="btn-start">Get Started</a>
+          <a href="login.html" class="btn-start">Get Started</a>
         </div>
     </nav>
     <section class="hero">
@@ -31,5 +31,15 @@
         </div>
       </div>
     </section>
+    <script>
+      const LOGIN_PAGE = 'login.html';
+
+      document.querySelectorAll('.btn-start, .hero-btn').forEach((btn) => {
+        btn.addEventListener('click', (event) => {
+          event.preventDefault();
+          window.location.href = LOGIN_PAGE;
+        });
+      });
+    </script>
 </body>
 </html>
