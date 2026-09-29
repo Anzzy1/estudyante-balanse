@@ -42,7 +42,7 @@ function CreateAccount() {
               </button>
             </div>
 
-            <Link to="" 
+            <Link to="/verify-email" 
             className="w-full h-[50px] bg-[#FFD75A] text-[#17243a] font-extrabold text-[18px] rounded-[18px] flex items-center justify-center gap-2 hover:bg-[#FFCA3A] cursor-pointer"
             style={{ fontFamily: "'Nunito Sans', 'Nunito', sans-serif"}}
             >Create Account

@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
 import '../styles.css'
 import GetStarted from './pages/getStarted'
 import CreateAccount from './pages/CreateAccount'
+import VerifyEmail from './pages/VerifyEmail'
 
 function Home() {
   return (
@@ -43,6 +44,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/get-started" element={<GetStarted />} />
         <Route path="/create-account" element={<CreateAccount />} />
+        <Route path="/verify-email" element={<VerifyEmail />} />
       </Routes>
     </BrowserRouter>
   )
