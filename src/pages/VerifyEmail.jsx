@@ -7,7 +7,7 @@ function VerifyEmail() {
   const handleChange = (val, i) => {
     if (!/^[0-9]?$/.test(val)) return
     const next = [...code]
-    next[i] = val
+    next[i] = val 
     setCode(next)
     if (val && i < 5) document.getElementById(`otp-${i + 1}`)?.focus()
   }
@@ -44,7 +44,7 @@ function VerifyEmail() {
               ))}
             </div>
 
-            <Link to="" className="w-full h-[50px] bg-[#FFD75A] text-[#17243a] font-extrabold text-[18px] rounded-[18px] flex items-center justify-center gap-2 hover:bg-[#FFCA3A] cursor-pointer"
+            <Link to="/welcome" className="w-full h-[50px] bg-[#FFD75A] text-[#17243a] font-extrabold text-[18px] rounded-[18px] flex items-center justify-center gap-2 hover:bg-[#FFCA3A] cursor-pointer"
             style={{ fontFamily: "'Nunito', sans-serif" }}>Verify Email 
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14" /><path d="M13 6l6 6-6 6" /></svg> 
             </Link>

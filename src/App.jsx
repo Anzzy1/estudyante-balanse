@@ -3,6 +3,7 @@ import '../styles.css'
 import GetStarted from './pages/getStarted'
 import CreateAccount from './pages/CreateAccount'
 import VerifyEmail from './pages/VerifyEmail'
+import Welcome from './pages/Welcome'
 
 function Home() {
   return (
@@ -45,6 +46,7 @@ function App() {
         <Route path="/get-started" element={<GetStarted />} />
         <Route path="/create-account" element={<CreateAccount />} />
         <Route path="/verify-email" element={<VerifyEmail />} />
+        <Route path="/welcome" element={<Welcome />} />
       </Routes>
     </BrowserRouter>
   )
