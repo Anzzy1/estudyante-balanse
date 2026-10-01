@@ -26,7 +26,7 @@ function Welcome() {
             <h2 className="text-4xl font-bold mt-6 text-[#002C77]" style={{ fontFamily: "'Nunito', sans-serif"}}>Your account is ready.</h2>
             <p className="text-[#6682AD] text-xl mt-4 mb-8">You're all set! Estudyante Balance includes both <br /> allowance tracking and time management to help <br /> you manage your student life.</p>
     
-            <Link to="/welcome" className="w-full max-w-md h-[60px] bg-[#FFD75A] text-[#17243a] font-extrabold text-[18px] rounded-full flex items-center justify-center gap-2 hover:bg-[#FFCA3A] cursor-pointer"
+            <Link to="/setup" className="w-full max-w-md h-[60px] bg-[#FFD75A] text-[#17243a] font-extrabold text-[18px] rounded-full flex items-center justify-center gap-2 hover:bg-[#FFCA3A] cursor-pointer"
             style={{ fontFamily: "'Nunito', sans-serif" }}>Set Up My Account 
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14" /><path d="M13 6l6 6-6 6" /></svg> 
             </Link>
