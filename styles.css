@@ -752,15 +752,27 @@ nav {
 
 /* Print Styles */
 @media print {
-  nav, .nav-buttons, .btn-primary, .btn-secondary, .btn-back, .btn-next, .btn-add-subject {
+  nav, .nav-buttons, .btn-primary, .btn-secondary, .btn-back, .btn-next, .btn-add-subject, .no-print {
     display: none !important;
   }
-  
+
   body {
     background: white !important;
   }
-  
+
   .page-container {
     background: none !important;
   }
+}
+
+/* Delete buttons */
+.del-btn,
+.del-commit {
+  transition: color 0.2s, transform 0.2s;
+}
+
+.del-btn:hover,
+.del-commit:hover {
+  color: #e74c3c;
+  transform: scale(1.1);
 }

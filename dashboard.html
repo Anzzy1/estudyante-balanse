@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estudyante Balanse - Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body style="font-family: 'Nunito', sans-serif;">
+
+<div class="min-h-screen flex bg-[#f3faff] text-[#123b7c]">
+
+    <!-- SIDEBAR -->
+    <aside class="w-[305px] min-h-screen bg-white border-r border-[#d6e9fa] fixed left-0 top-0 hidden lg:flex flex-col z-10 no-print">
+        <div class="px-7 pt-6">
+            <img src="images/eb_login_logo.png" alt="Estudyante Balanse" class="h-14 w-auto">
+        </div>
+
+        <nav class="px-5 pt-4">
+            <a href="dashboard.html" class="flex items-center gap-[18px] px-[18px] py-[14px] mb-[10px] rounded-[13px] text-white bg-[#3185ed] shadow-[0_8px_20px_rgba(49,133,237,.2)] text-[18px] font-semibold">
+                <span class="w-[25px] text-[22px]">⌂</span> Dashboard
+            </a>
+            <a href="setup.html" class="flex items-center gap-[18px] px-[18px] py-[14px] mb-[10px] rounded-[13px] text-[#35609a] hover:bg-[#eef7ff] text-[18px] font-semibold transition-all">
+                <span class="w-[25px] text-[22px]">▣</span> My Schedule
+            </a>
+            <a href="setup.html" class="flex items-center gap-[18px] px-[18px] py-[14px] mb-[10px] rounded-[13px] text-[#35609a] hover:bg-[#eef7ff] text-[18px] font-semibold transition-all">
+                <span class="w-[25px] text-[22px]">💼</span> My Commitments
+            </a>
+            <a href="setup.html" class="flex items-center gap-[18px] px-[18px] py-[14px] mb-[10px] rounded-[13px] text-[#35609a] hover:bg-[#eef7ff] text-[18px] font-semibold transition-all">
+                <span class="w-[25px] text-[22px]">★</span> My Preferences
+            </a>
+            <a href="#aiCard" class="flex items-center gap-[18px] px-[18px] py-[14px] mb-[10px] rounded-[13px] text-[#35609a] hover:bg-[#eef7ff] text-[18px] font-semibold transition-all">
+                <span class="w-[25px] text-[22px]">🤖</span> AI Assistant
+            </a>
+        </nav>
+
+        <div class="mt-auto p-5 text-center">
+            <div class="inline-block bg-white border-[3px] border-[#073b91] rounded-[30px] px-[15px] py-[10px] text-[18px] font-bold mb-2">You got this!</div>
+            <img src="images/eb_welcome_comic.png" alt="Mascot" class="w-full max-w-[220px] mx-auto">
+        </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="w-full lg:ml-[305px] lg:w-[calc(100%-305px)]">
+
+        <!-- TOPBAR -->
+        <header class="min-h-[90px] px-[35px] py-3 flex flex-wrap items-center justify-between gap-3 bg-[#f5fbff]">
+            <div class="text-[30px] font-extrabold text-[#073b91] flex items-center gap-[15px]" style="font-family: 'Baloo 2', sans-serif;">⌂ Dashboard</div>
+            <div class="flex items-center gap-[25px]">
+                <div class="text-[16px] font-semibold">📅 <span id="todayDate"></span></div>
+                <div class="text-[16px] font-semibold" id="topGreet">☀️ Good morning!</div>
+                <button onclick="window.print()" class="no-print h-[44px] px-5 rounded-full bg-white border-2 border-[#c8e1ff] text-[#144487] text-[15px] font-extrabold cursor-pointer hover:bg-[#f7fbff]">🖨 Print</button>
+                <div class="w-[50px] h-[50px] rounded-full bg-white border-2 border-[#b6ddff] flex items-center justify-center text-[25px]">👦🏻</div>
+            </div>
+        </header>
+
+        <!-- CONTENT -->
+        <section class="px-[35px] pt-[15px] pb-10">
+
+            <!-- HERO -->
+            <div class="min-h-[160px] rounded-[20px] bg-gradient-to-r from-[#dff1ff] to-[#f9fdff] border border-[#d5eafb] p-7 flex items-center justify-between overflow-hidden">
+                <div>
+                    <h1 class="text-[38px] text-[#073b91] font-extrabold" style="font-family: 'Baloo 2', sans-serif;" id="heroHello">Good morning! 👋</h1>
+                    <p class="text-[22px] text-[#3983d7]">Here's your plan for today.</p>
+                </div>
+                <div class="hidden md:flex items-center gap-4">
+                    <div class="bg-white border-[3px] border-[#073b91] rounded-[25px] p-2.5 text-[14px] leading-[18px] w-[180px] font-bold">Small steps every day lead to big dreams!</div>
+                    <span class="text-[80px]">🤖</span>
+                </div>
+            </div>
+
+            <!-- STATS -->
+            <div class="grid grid-cols-2 xl:grid-cols-4 gap-[15px] my-[15px]">
+                <div class="min-h-[145px] rounded-2xl p-[18px] text-white flex flex-col items-center justify-center text-center bg-[#3589ed] shadow-[0_8px_20px_rgba(0,0,0,.06)]">
+                    <div class="text-[27px] mb-1">📖</div>
+                    <strong class="text-[30px] leading-[30px]" id="classesCount">0</strong>
+                    <span class="text-[15px] leading-[17px]">Classes<br>today</span>
+                </div>
+                <div class="min-h-[145px] rounded-2xl p-[18px] text-white flex flex-col items-center justify-center text-center bg-[#48c9ad] shadow-[0_8px_20px_rgba(0,0,0,.06)]">
+                    <div class="text-[27px] mb-1">◷</div>
+                    <strong class="text-[30px] leading-[30px]" id="freeTime">0h</strong>
+                    <span class="text-[15px] leading-[17px]">Free Time<br>today</span>
+                </div>
+                <div class="min-h-[145px] rounded-2xl p-[18px] text-white flex flex-col items-center justify-center text-center bg-[#8975e9] shadow-[0_8px_20px_rgba(0,0,0,.06)]">
+                    <div class="text-[27px] mb-1">💼</div>
+                    <strong class="text-[30px] leading-[30px]" id="commitmentCount">0</strong>
+                    <span class="text-[15px] leading-[17px]">Commitments<br>today</span>
+                </div>
+                <div class="min-h-[145px] rounded-2xl p-[18px] text-white flex flex-col items-center justify-center text-center bg-[#ffbf38] shadow-[0_8px_20px_rgba(0,0,0,.06)]">
+                    <div class="text-[27px] mb-1">🎯</div>
+                    <strong class="text-[30px] leading-[30px]" id="focusGoal">1 hr</strong>
+                    <span class="text-[15px] leading-[17px]">Focus Goal<br>study time</span>
+                </div>
+            </div>
+
+            <!-- THREE COLUMN -->
+            <div class="grid grid-cols-1 xl:grid-cols-[1.25fr_1fr_.7fr] gap-[15px]">
+
+                <!-- SCHEDULE -->
+                <div class="bg-white border border-[#cde4fb] rounded-[18px] shadow-[0_5px_18px_rgba(50,120,180,.05)] overflow-hidden min-h-[570px]">
+                    <div class="px-5 py-[18px] flex items-center justify-between">
+                        <h2 class="text-[21px] text-[#073b91] font-extrabold" style="font-family: 'Baloo 2', sans-serif;">📅 Today's Schedule</h2>
+                        <a href="setup.html" class="text-[#3185ed] text-[14px]">View full schedule →</a>
+                    </div>
+                    <div id="scheduleList" class="px-[18px] pb-5"></div>
+                </div>
+
+                <!-- AI -->
+                <div>
+                    <div class="bg-white border-2 border-[#b8ddff] rounded-[18px] shadow-[0_5px_18px_rgba(50,120,180,.05)] overflow-hidden" id="aiCard">
+                        <div class="px-5 py-[18px] flex items-center justify-between">
+                            <h2 class="text-[21px] text-[#073b91] font-extrabold" style="font-family: 'Baloo 2', sans-serif;">💡 Nova's Suggestion</h2>
+                            <span class="bg-[#3185ed] text-white rounded-[20px] px-[10px] py-[3px] text-[13px] font-bold">AI</span>
+                        </div>
+                        <div class="px-[22px] pb-[25px] pt-[10px]">
+                            <div class="text-[38px]">💡</div>
+                            <h3 class="text-[23px] text-[#073b91] font-bold my-[5px]" id="aiTitle">Let's check your schedule!</h3>
+                            <p class="text-[16px] leading-[23px] text-[#49729e] mb-[18px]" id="aiMessage">Nova is looking for the best activity for you.</p>
+                            <button class="border-none bg-[#3185ed] text-white rounded-[30px] px-5 py-[13px] text-[16px] font-bold cursor-pointer hover:-translate-y-0.5 hover:shadow-[0_7px_15px_rgba(49,133,237,.25)] transition-all" id="aiButton">▶ Start Focus Session →</button>
+                        </div>
+                    </div>
+
+                    <div class="bg-white border border-[#cde4fb] rounded-[18px] shadow-[0_5px_18px_rgba(50,120,180,.05)] overflow-hidden mt-[15px]">
+                        <div class="px-5 py-[18px]"><h2 class="text-[21px] text-[#073b91] font-extrabold" style="font-family: 'Baloo 2', sans-serif;">✨ Recommended for you</h2></div>
+                        <div id="recommendationList"></div>
+                    </div>
+                </div>
+
+                <!-- RIGHT -->
+                <div>
+                    <div class="bg-white border border-[#cde4fb] rounded-[18px] shadow-[0_5px_18px_rgba(50,120,180,.05)] overflow-hidden min-h-[320px]">
+                        <div class="px-5 py-[18px]"><h2 class="text-[21px] text-[#073b91] font-extrabold" style="font-family: 'Baloo 2', sans-serif;">📅 Mini Calendar</h2></div>
+                        <div class="px-[15px] pb-5">
+                            <div class="flex items-center justify-between mb-[15px]">
+                                <button class="border-none bg-transparent text-[25px] text-[#073b91] cursor-pointer" onclick="changeMonth(-1)">‹</button>
+                                <strong id="monthName"></strong>
+                                <button class="border-none bg-transparent text-[25px] text-[#073b91] cursor-pointer" onclick="changeMonth(1)">›</button>
+                            </div>
+                            <div class="grid grid-cols-7 text-center">
+                                <span class="text-[12px] text-[#7293b7] mb-2">Sun</span><span class="text-[12px] text-[#7293b7] mb-2">Mon</span><span class="text-[12px] text-[#7293b7] mb-2">Tue</span><span class="text-[12px] text-[#7293b7] mb-2">Wed</span><span class="text-[12px] text-[#7293b7] mb-2">Thu</span><span class="text-[12px] text-[#7293b7] mb-2">Fri</span><span class="text-[12px] text-[#7293b7] mb-2">Sat</span>
+                            </div>
+                            <div id="calendarDays" class="grid grid-cols-7 text-center"></div>
+                        </div>
+                    </div>
+
+                    <div class="mt-[15px] min-h-[235px] rounded-[18px] px-5 py-[30px] bg-gradient-to-br from-[#e1f2ff] to-[#f8fcff] text-center flex flex-col justify-center">
+                        <h2 class="text-[25px] text-[#073b91] font-extrabold" style="font-family: 'Baloo 2', sans-serif;">Progress<br>over perfection.</h2>
+                        <p class="mt-[10px] text-[#5e87b3]">You're doing great! 🌟</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- QUICK ACCESS -->
+            <div class="bg-white border border-[#cde4fb] rounded-[18px] shadow-[0_5px_18px_rgba(50,120,180,.05)] overflow-hidden mt-[15px] pb-[15px] no-print">
+                <h2 class="px-5 pt-[18px] pb-[10px] text-[21px] font-extrabold" style="font-family: 'Baloo 2', sans-serif;">⚡ Quick Access</h2>
+                <div class="grid grid-cols-2 xl:grid-cols-4 gap-3 px-[15px]">
+                    <a href="setup.html" class="bg-white border border-[#cde4fb] rounded-xl p-[14px] text-[#073b91] text-[20px] flex items-center gap-[10px] hover:bg-[#f0f8ff] hover:-translate-y-0.5 transition-all"><span>📅</span><span class="text-[14px] font-bold">Add Schedule</span></a>
+                    <a href="setup.html" class="bg-white border border-[#cde4fb] rounded-xl p-[14px] text-[#073b91] text-[20px] flex items-center gap-[10px] hover:bg-[#f0f8ff] hover:-translate-y-0.5 transition-all"><span>💼</span><span class="text-[14px] font-bold">Add Commitment</span></a>
+                    <a href="setup.html" class="bg-white border border-[#cde4fb] rounded-xl p-[14px] text-[#073b91] text-[20px] flex items-center gap-[10px] hover:bg-[#f0f8ff] hover:-translate-y-0.5 transition-all"><span>⭐</span><span class="text-[14px] font-bold">Update Preferences</span></a>
+                    <a href="#aiCard" class="bg-white border border-[#cde4fb] rounded-xl p-[14px] text-[#073b91] text-[20px] flex items-center gap-[10px] hover:bg-[#f0f8ff] hover:-translate-y-0.5 transition-all"><span>🤖</span><span class="text-[14px] font-bold">Open AI Assistant</span></a>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+
+<script>
+(function() {
+    let setup = null;
+    try { setup = JSON.parse(localStorage.getItem('eb_setup') || 'null'); } catch (e) { setup = null; }
+    if (!setup) { setup = { subjects: [], commitments: [], priorities: [], studyTime: '', taskTime: '', name: localStorage.getItem('userName') || '' }; }
+
+    const today = new Date();
+    const dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    const todayName = dayNames[today.getDay()];
+    const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+    document.getElementById('todayDate').textContent = today.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) + ', ' + today.getFullYear();
+
+    const hour = today.getHours();
+    const greet = hour < 12 ? 'Good morning!' : hour < 18 ? 'Good afternoon!' : 'Good evening!';
+    const greetIcon = hour < 12 ? '☀️' : hour < 18 ? '⛅' : '🌙';
+    document.getElementById('topGreet').textContent = greetIcon + ' ' + greet;
+    document.getElementById('heroHello').textContent = greet + (setup.name ? ' ' + setup.name.split(' ')[0] + '!' : ' 👋').replace('! 👋', ' 👋');
+    if (setup.name) document.getElementById('heroHello').textContent = greet + ', ' + setup.name.split(' ')[0] + '! 👋';
+
+    // ---- Adapt our stored format to scheduler ----
+    function splitDays(daysStr) {
+        if (Array.isArray(daysStr)) return daysStr;
+        if (!daysStr) return [];
+        return daysStr.split(',').map(function(d) { return d.trim().substring(0, 3); });
+    }
+    function splitTimeRange(t) {
+        if (!t) return ['08:00', '09:00'];
+        const parts = t.split(/–|-/).map(function(x) { return x.trim(); });
+        return [to24(parts[0] || '08:00'), to24(parts[1] || '09:00')];
+    }
+    function to24(t) {
+        const m = t.match(/(\d{1,2}):(\d{2})\s*([AP]M)?/i);
+        if (!m) return '08:00';
+        let h = Number(m[1]);
+        if (m[3]) {
+            const ap = m[3].toUpperCase();
+            if (ap === 'PM' && h < 12) h += 12;
+            if (ap === 'AM' && h === 12) h = 0;
+        }
+        return String(h).padStart(2, '0') + ':' + m[2];
+    }
+
+    const subjects = (setup.subjects || []).map(function(s) {
+        const range = splitTimeRange(s.time);
+        return { name: s.name, startTime: range[0], endTime: range[1], repeatDays: splitDays(s.days) };
+    });
+    const commitments = (setup.commitments || []).map(function(c) {
+        const range = splitTimeRange(c.time);
+        return { name: c.name, startTime: range[0], endTime: range[1], repeatDays: splitDays(c.days), icon: c.icon || '💼' };
+    });
+    const priorities = setup.priorities || [];
+    const studyTime = setup.studyTime || '1 hr';
+
+    function isToday(days) { return days && days.includes(todayName); }
+    const todaySubjects = subjects.filter(function(s) { return isToday(s.repeatDays); });
+    const todayCommitments = commitments.filter(function(c) { return isToday(c.repeatDays); });
+
+    document.getElementById('classesCount').textContent = todaySubjects.length;
+    document.getElementById('commitmentCount').textContent = todayCommitments.length;
+    document.getElementById('focusGoal').textContent = studyTime;
+
+    function timeToMinutes(t) { if (!t) return 0; const p = t.split(':').map(Number); return p[0] * 60 + p[1]; }
+    function minutesToTime(m) { return String(Math.floor(m / 60)).padStart(2, '0') + ':' + String(m % 60).padStart(2, '0'); }
+    function formatTime(t) {
+        const p = t.split(':').map(Number);
+        const suffix = p[0] >= 12 ? 'PM' : 'AM';
+        return (p[0] % 12 || 12) + ':' + String(p[1]).padStart(2, '0') + ' ' + suffix;
+    }
+
+    function buildSchedule() {
+        const events = [];
+        todaySubjects.forEach(function(s) { events.push({ start: s.startTime, end: s.endTime, name: s.name, type: 'Class', icon: '📖', className: 'class' }); });
+        todayCommitments.forEach(function(c) { events.push({ start: c.startTime, end: c.endTime, name: c.name, type: 'Commitment', icon: c.icon, className: 'commitment' }); });
+        events.sort(function(a, b) { return timeToMinutes(a.start) - timeToMinutes(b.start); });
+        const schedule = [];
+        let prevEnd = null;
+        events.forEach(function(e) {
+            const st = timeToMinutes(e.start), en = timeToMinutes(e.end);
+            if (prevEnd !== null && st > prevEnd) {
+                schedule.push({ start: minutesToTime(prevEnd), end: minutesToTime(st), name: 'Free Time', type: 'AI suggests a useful activity', icon: '✨', className: 'free' });
+            }
+            schedule.push(e);
+            prevEnd = Math.max(prevEnd || 0, en);
+        });
+        if (!schedule.length) schedule.push({ start: '08:00', end: '17:00', name: 'Your day is open!', type: 'Add a schedule or commitment', icon: '✨', className: 'free' });
+        return schedule;
+    }
+
+    const bgMap = { class: 'bg-[#edf5ff]', free: 'bg-[#fff4cf]', commitment: 'bg-[#ffe0df]', break: 'bg-[#f0eaff]' };
+    function renderSchedule() {
+        const box = document.getElementById('scheduleList');
+        box.innerHTML = '';
+        buildSchedule().forEach(function(item) {
+            const div = document.createElement('div');
+            div.className = 'grid grid-cols-[90px_1fr] min-h-[60px]';
+            div.innerHTML = '<div class="text-[14px] font-semibold text-[#4681c2] pt-3">' + formatTime(item.start) + ' - ' + formatTime(item.end) + '</div>' +
+                '<div class="px-[15px] py-[9px] rounded-xl mb-[7px] ' + (bgMap[item.className] || bgMap.class) + ' flex items-center justify-between">' +
+                '<div><div class="text-[17px] font-bold">' + item.icon + ' ' + item.name + '</div>' +
+                '<div class="text-[12px] text-[#5c83b1]">' + item.type + '</div></div>' +
+                (item.className === 'free' ? '<span class="text-[25px] text-[#8ba9d0]">›</span>' : '') + '</div>';
+            box.appendChild(div);
+        });
+    }
+    renderSchedule();
+
+    function calcFree() {
+        let total = 0;
+        buildSchedule().forEach(function(i) { if (i.className === 'free') total += timeToMinutes(i.end) - timeToMinutes(i.start); });
+        const h = Math.floor(total / 60), m = total % 60;
+        if (!h) return m + 'm';
+        if (!m) return h + 'h';
+        return h + 'h ' + m + 'm';
+    }
+    document.getElementById('freeTime').textContent = calcFree();
+
+    function generateAI() {
+        const sched = buildSchedule();
+        const free = sched.filter(function(i) { return i.className === 'free'; });
+        if (!free.length) return { title: 'Your day is fully planned! 🎯', message: "You don't have a clear vacant period today. Focus on your scheduled activities and remember to take short breaks.", button: 'View My Schedule →' };
+        const longest = free.reduce(function(a, b) {
+            return (timeToMinutes(b.end) - timeToMinutes(b.start)) > (timeToMinutes(a.end) - timeToMinutes(a.start)) ? b : a;
+        });
+        const mins = timeToMinutes(longest.end) - timeToMinutes(longest.start);
+        const hasStudy = priorities.some(function(p) { return /study|schoolwork/i.test(p); });
+        if (hasStudy) {
+            const subj = todaySubjects[0] ? todaySubjects[0].name : 'your schoolwork';
+            return { title: 'You have ' + (mins >= 60 ? Math.floor(mins / 60) + ' hour' : mins + ' minutes') + ' free before your next activity.', message: 'Why not work on ' + subj + ' during this vacant period? Your preferences show that studying and schoolwork are important to you.', button: 'Start Focus Session →' };
+        }
+        if (priorities.some(function(p) { return /rest/i.test(p); })) {
+            return { title: 'You have some free time. 😌', message: "You've got a vacant period, so this could be a good time to rest and recharge before your next activity.", button: 'Take a Break →' };
+        }
+        if (priorities.some(function(p) { return /hobb|entertainment/i.test(p); })) {
+            return { title: 'A little free time for yourself! 🎮', message: 'You have a vacant period. This is a good opportunity to enjoy one of your hobbies.', button: 'Use Free Time →' };
+        }
+        return { title: 'You have free time available! ✨', message: 'Nova found a vacant period in your schedule. You can use it for studying, schoolwork, rest, or something you enjoy.', button: 'Plan This Time →' };
+    }
+    const ai = generateAI();
+    document.getElementById('aiTitle').textContent = ai.title;
+    document.getElementById('aiMessage').textContent = ai.message;
+    document.getElementById('aiButton').textContent = '▶ ' + ai.button;
+
+    (function renderRecs() {
+        const box = document.getElementById('recommendationList');
+        const recs = [];
+        if (priorities.some(function(p) { return /study|schoolwork/i.test(p); })) recs.push({ icon: '📚', title: 'Review your lessons', text: 'You have a vacant period that can be used for studying.' });
+        if (priorities.some(function(p) { return /hobb|entertainment/i.test(p); })) recs.push({ icon: '🎮', title: 'Enjoy your hobby', text: 'Give yourself some personal time during a free period.' });
+        if (priorities.some(function(p) { return /exercise|sports/i.test(p); })) recs.push({ icon: '🏃', title: 'Move your body', text: 'A short walk or exercise can help you recharge.' });
+        if (priorities.some(function(p) { return /rest/i.test(p); })) recs.push({ icon: '😌', title: 'Take a break', text: "Don't forget to give yourself time to rest." });
+        if (!recs.length) recs.push({ icon: '✨', title: 'Plan your free time', text: 'Nova found some free time in your schedule.' });
+        box.innerHTML = '';
+        recs.slice(0, 3).forEach(function(r) {
+            const d = document.createElement('div');
+            d.className = 'mx-[15px] mb-[10px] p-3 rounded-xl flex items-center gap-[10px] bg-[#f2f7ff]';
+            d.innerHTML = '<div class="text-[25px]">' + r.icon + '</div><div class="flex-1"><strong class="block text-[15px]">' + r.title + '</strong><small class="text-[#6c89a9] text-[12px]">' + r.text + '</small></div><button class="border-none rounded-lg bg-[#dff0ff] text-[#073b91] px-[10px] py-[7px] font-bold cursor-pointer">Do this</button>';
+            box.appendChild(d);
+        });
+    })();
+
+    let calOffset = 0;
+    window.changeMonth = function(dir) { calOffset += dir; renderCalendar(); };
+    function renderCalendar() {
+        const base = new Date(today.getFullYear(), today.getMonth() + calOffset, 1);
+        const y = base.getFullYear(), m = base.getMonth();
+        document.getElementById('monthName').textContent = monthNames[m] + ' ' + y;
+        const first = new Date(y, m, 1).getDay();
+        const days = new Date(y, m + 1, 0).getDate();
+        const box = document.getElementById('calendarDays');
+        box.innerHTML = '';
+        for (let i = 0; i < first; i++) box.appendChild(document.createElement('span'));
+        for (let d = 1; d <= days; d++) {
+            const s = document.createElement('span');
+            s.textContent = d;
+            s.className = 'py-[7px] text-[13px]';
+            if (!calOffset && d === today.getDate()) s.className += ' today';
+            box.appendChild(s);
+        }
+        if (!document.getElementById('calStyle')) {
+            const st = document.createElement('style');
+            st.id = 'calStyle';
+            st.textContent = '#calendarDays .today{background:#3185ed;color:#fff;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:auto;}';
+            document.head.appendChild(st);
+        }
+    }
+    renderCalendar();
+})();
+</script>
+</body>
+</html>
