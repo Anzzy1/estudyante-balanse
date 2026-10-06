@@ -104,7 +104,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         document.getElementById('nextBtn').addEventListener('click', () => { if (step < 5) { step++; renderSteps(); window.scrollTo({ top: 0, behavior: 'smooth' }); } });
         document.getElementById('backBtn').addEventListener('click', () => { if (step > 1) { step--; renderSteps(); window.scrollTo({ top: 0, behavior: 'smooth' }); } });
-        document.getElementById('finishBtn').addEventListener('click', () => {
+        document.getElementById('finishBtn').addEventListener('click', async (e) => {
             try {
                 localStorage.setItem('eb_setup', JSON.stringify({
                     name: localStorage.getItem('userName') || '',
@@ -116,7 +116,15 @@ document.addEventListener('DOMContentLoaded', function() {
                     studyTime: studyTime,
                     taskTime: taskTime
                 }));
-            } catch (e) {}
+            } catch (err) {}
+            // Kailangan ng account para ma-save sa database (para makapag-login ulit)
+            e.preventDefault();
+            if (!getUser()) {
+                window.location.href = 'create-account.html?finish=1';
+                return;
+            }
+            await syncSetupToAPI();
+            window.location.href = 'dashboard.html';
         });
 
         document.querySelectorAll('#daysWrap button').forEach(btn => {
@@ -136,7 +144,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const subName = document.getElementById('subName').value;
             const start = document.getElementById('startTime').value;
             const end = document.getElementById('endTime').value;
-            if (!subName || !start || !end) { alert('Fill subject + time'); return; }
+            if (!subName || !start || !end) { showToast('Fill subject + time'); return; }
             const random = colors[Math.floor(Math.random() * colors.length)];
             subjects.push({ id: Date.now(), name: subName, time: start + ' - ' + end, days: days.join(', '), color: random });
             document.getElementById('subName').value = '';
@@ -254,7 +262,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const actName = document.getElementById('actName').value.trim() || selectedActivity;
                 const start = document.getElementById('commitStart').value;
                 const end = document.getElementById('commitEnd').value;
-                if (!commitDays.length || !start || !end) { alert('Pick days + start/end time'); return; }
+                if (!commitDays.length || !start || !end) { showToast('Pick days + start/end time'); return; }
                 commitments.push({ id: Date.now(), name: actName, days: commitDays.join(', '), time: fmtTime(start) + ' – ' + fmtTime(end), icon: '⏰', work: selectedActivity.indexOf('Work') === 0 });
                 document.getElementById('actName').value = '';
                 document.getElementById('commitStart').value = '17:00';
@@ -331,3 +339,131 @@ document.addEventListener('DOMContentLoaded', function() {
         renderSteps();
     }
 });
+
+// ============ BACKEND (XAMPP) ============
+const API_BASE = 'api/';
+
+// Inline toast (kapalit ng alert dialog)
+function showToast(text, isError) {
+    let t = document.getElementById('eb-toast');
+    if (!t) {
+        t = document.createElement('div');
+        t.id = 'eb-toast';
+        t.style.cssText = 'position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:9999;max-width:min(480px,90vw);padding:12px 20px;border-radius:12px;font-family:Nunito,sans-serif;font-size:15px;font-weight:700;color:#fff;box-shadow:0 8px 22px rgba(0,0,0,.18);transition:opacity .3s;';
+        document.body.appendChild(t);
+    }
+    t.style.background = isError === false ? '#2ECC71' : '#e74c3c';
+    t.textContent = text;
+    t.style.opacity = '1';
+    clearTimeout(t._timer);
+    t._timer = setTimeout(function() { t.style.opacity = '0'; }, 3200);
+}
+
+function getUser() {
+    try { return JSON.parse(localStorage.getItem('eb_user') || 'null'); }
+    catch (e) { return null; }
+}
+
+async function apiPost(path, data) {
+    const res = await fetch(API_BASE + path, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+    });
+    return res.json();
+}
+
+function apiError() {
+    showToast('Hindi makakonekta sa server. Buksan ang project sa XAMPP: http://localhost/estudyante-balanse/');
+}
+
+// Register mula sa create-account.html (name galing sa get-started)
+async function doRegister() {
+    const email = (document.getElementById('emailInput') || {}).value || '';
+    const password = (document.getElementById('passwordInput') || {}).value || '';
+    const name = localStorage.getItem('userName') || email.split('@')[0] || 'Student';
+    if (!email.trim() || !password) { showToast('Ilagay ang email at password.'); return; }
+    let data;
+    try { data = await apiPost('register.php', { name: name.trim(), email: email.trim(), password: password }); }
+    catch (e) { apiError(); return; }
+    if (!data.success) { showToast(data.error || 'Registration failed.'); return; }
+    localStorage.setItem('eb_user', JSON.stringify(data.user));
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('finish') === '1') {
+        await syncSetupToAPI();
+        window.location.href = 'dashboard.html';
+    } else {
+        window.location.href = 'verify-email.html';
+    }
+}
+
+// Login mula sa login.html
+async function doLogin() {
+    const email = (document.getElementById('loginEmail') || {}).value || '';
+    const password = (document.getElementById('loginPassword') || {}).value || '';
+    if (!email.trim() || !password) { showToast('Ilagay ang email at password.'); return; }
+    let data;
+    try { data = await apiPost('login.php', { email: email.trim(), password: password }); }
+    catch (e) { apiError(); return; }
+    if (!data.success) { showToast(data.error || 'Login failed.'); return; }
+    localStorage.setItem('eb_user', JSON.stringify(data.user));
+    localStorage.setItem('userName', data.user.name);
+    window.location.href = 'dashboard.html';
+}
+
+function logout() {
+    localStorage.removeItem('eb_user');
+    window.location.href = 'index.html';
+}
+
+// "HH:MM" o "h:MM AM/PM" -> "HH:MM" (24h)
+function to24hs(t) {
+    const m = String(t || '').match(/(\d{1,2}):(\d{2})\s*([AP]M)?/i);
+    if (!m) return '08:00';
+    let h = Number(m[1]);
+    if (m[3]) {
+        const ap = m[3].toUpperCase();
+        if (ap === 'PM' && h < 12) h += 12;
+        if (ap === 'AM' && h === 12) h = 0;
+    }
+    return String(h).padStart(2, '0') + ':' + m[2];
+}
+
+function splitRange24(t) {
+    const p = String(t || '').split(/–|-/);
+    return [to24hs(p[0] || '08:00'), to24hs(p[1] || '09:00')];
+}
+
+// I-save ang eb_setup (localStorage) sa DB gamit ang naka-login na user
+async function syncSetupToAPI() {
+    const user = getUser();
+    if (!user) return false;
+    let setup = null;
+    try { setup = JSON.parse(localStorage.getItem('eb_setup') || 'null'); } catch (e) { setup = null; }
+    if (!setup) return true;
+    const subjects = (setup.subjects || []).map(function(s) {
+        const r = splitRange24(s.time);
+        return { name: s.name, start: r[0], end: r[1], days: s.days || '', color: 'blue' };
+    });
+    const commitments = (setup.commitments || []).map(function(c) {
+        const r = splitRange24(c.time);
+        return { name: c.name, start: r[0], end: r[1], days: c.days || '', icon: '💼' };
+    });
+    let data;
+    try {
+        data = await apiPost('schedules.php?action=save', {
+            user_id: user.id,
+            subjects: subjects,
+            commitments: commitments,
+            preferences: {
+                level: setup.level || '',
+                job: setup.job || '',
+                priorities: (setup.priorities || []).join(', '),
+                studyTime: setup.studyTime || '',
+                taskTime: setup.taskTime || ''
+            }
+        });
+    } catch (e) { apiError(); return false; }
+    if (!data.success) { showToast(data.error || 'Save failed.'); return false; }
+    return true;
+}

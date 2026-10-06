@@ -29,7 +29,7 @@
                 <span class="w-[25px] h-[25px] flex items-center justify-center flex-none"><svg width="23" height="23" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.5L12 4l9 7.5v8a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-8z"/></svg></span>
                 <span>Dashboard</span>
             </a>
-            <a href="setup.html" class="h-[54px] flex items-center gap-[18px] px-[22px] rounded-[17px] text-[#6080b2] hover:bg-[#f1f7ff] hover:text-[#2d8cff] hover:translate-x-0.5 text-[16px] font-semibold transition-all">
+            <a href="schedule.html" class="h-[54px] flex items-center gap-[18px] px-[22px] rounded-[17px] text-[#6080b2] hover:bg-[#f1f7ff] hover:text-[#2d8cff] hover:translate-x-0.5 text-[16px] font-semibold transition-all">
                 <span class="w-[25px] h-[25px] flex items-center justify-center flex-none"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="16" rx="2"/><path d="M8 3v4M16 3v4M4 9h16"/><path d="M8 13h3M8 17h3M14 13h2"/></svg></span>
                 <span>My Schedule</span>
             </a>
@@ -50,19 +50,16 @@
         <!-- TOPBAR -->
         <header class="h-[82px] flex items-center justify-between px-[15px] md:px-0 border-b border-[#e9f0f8]">
             <!-- TOPBAR SEARCH -->
-            <div class="w-full md:w-[420px] h-[42px] rounded-[14px] bg-[#eef5fc] flex items-center gap-3 px-[15px]">
-                <span class="flex items-center text-[#6686b4]"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6"/><path d="M16 16l5 5"/></svg></span>
-                <input type="text" id="searchInput" placeholder="Search..." class="border-none outline-none bg-transparent w-full text-[#123c8c] text-[14px] placeholder:text-[#6381ad]">
-            </div>
+
             <!-- TOPBAR RIGHT -->
-            <div class="hidden md:flex items-center h-full">
-                <div class="flex items-center gap-3 pr-6 border-r border-[#e6edf6] text-[#486da5] text-[14px] font-semibold">
+            <div class="hidden md:flex items-center h-full w-full gap-5">
+                <div class="flex items-center gap-3 text-[#486da5] text-[14px] font-semibold">
                     <span class="flex items-center"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="16" rx="2"/><path d="M8 3v4M16 3v4M4 9h16"/><path d="M8 13h3M8 17h3M14 13h2"/></svg></span>
                     <span id="currentDate">Tue, Aug 26, 2026</span>
                 </div>
                 <div class="flex items-center gap-[10px] px-[22px] text-[#123c8c] text-[15px] font-bold" id="topGreet"><span class="text-[#ffbd1b] text-[25px] leading-none">☀</span><span>Good day!</span></div>
-                <button class="w-[49px] h-[49px] flex items-center justify-center rounded-full bg-white border-2 border-[#9fd0ff] text-[#35609a]" type="button"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg></button>
-                <button onclick="window.print()" class="no-print h-[44px] px-5 ml-3 rounded-full bg-white border-2 border-[#c8e1ff] text-[#144487] text-[15px] font-extrabold cursor-pointer hover:bg-[#f7fbff]" style="font-family: 'Nunito', sans-serif;">🖨 Print</button>
+                <button class="w-[49px] h-[49px] flex items-center justify-center rounded-full bg-white border-2 border-[#9fd0ff] text-[#35609a] ml-auto" type="button"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg></button>
+
             </div>
         </header>
 
@@ -73,7 +70,7 @@
             <div class="grid grid-cols-1 xl:grid-cols-[minmax(0,2.05fr)_minmax(370px,1fr)] gap-[18px] mb-[18px]">
 
                 <!-- AI SUGGESTION CARD -->
-                <section class="relative min-h-[280px] rounded-[18px] overflow-hidden flex items-stretch shadow-[0_10px_35px_rgba(38,107,180,.07)]" id="aiHero" style="background: linear-gradient(135deg, #e2f3ff 0%, #f5fbff 45%, #eef1ff 100%); isolation: isolate;">
+                <section class="relative min-h-[280px] rounded-[18px] overflow-hidden flex items-stretch shadow-[0_10px_35px_rgba(38,107,180,.07)]" id="aiHero" style="background: url('images/ai-suggestion_bg.png') center / cover no-repeat, linear-gradient(135deg, #e2f3ff 0%, #f5fbff 45%, #eef1ff 100%); isolation: isolate;">
                     <div class="absolute w-[300px] h-[300px] rounded-full pointer-events-none" style="right: 120px; top: -180px; background: radial-gradient(circle, rgba(255,255,255,.8), rgba(255,255,255,0));"></div>
                     <div class="relative z-[5] p-[25px] w-[58%] flex flex-col justify-center">
                         <div class="inline-flex items-center gap-2 px-[15px] py-[7px] rounded-[30px] text-white text-[13px] font-bold shadow-[0_5px_15px_rgba(45,140,255,.18)] self-start" style="background: linear-gradient(135deg, #2d8cff, #398cf1);">
@@ -86,13 +83,7 @@
                             <span class="text-[12px]">▶</span><span>Start Focus Session</span><span class="text-[18px] ml-0.5">→</span>
                         </button>
                     </div>
-                    <div class="absolute right-[-8px] bottom-[-1px] w-1/2 h-full z-[3] hidden sm:block">
-                        <img id="energyComic" src="images/eb_welcome_comic.png" alt="Student energy" class="absolute right-0 bottom-0 w-full h-full object-contain drop-shadow-[0_10px_12px_rgba(20,69,122,.10)]" style="object-position: bottom right;">
-                    </div>
-                    <div class="absolute z-[8] right-[100px] top-[24px] min-w-[145px] p-[10px_12px] bg-white border-2 border-[#348df4] rounded-[25px_25px_25px_7px] -rotate-[7deg] hidden sm:flex items-center gap-[7px] shadow-[0_5px_15px_rgba(40,120,220,.12)]">
-                        <span class="text-[#2469d8] text-[18px]" id="batteryIcon">🔋</span>
-                        <div><strong class="block text-[11px] leading-[1.1] text-[#174c99]" id="batteryText">Full Energy</strong><small class="block text-[10px] leading-[1.2] text-[#174c99] font-bold" id="batteryMessage">Lots of free time!</small></div>
-                    </div>
+                    
                 </section>
 
                 <!-- STATS GRID -->
@@ -119,44 +110,41 @@
             <!-- MIDDLE ROW: schedule + recommended -->
             <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1.18fr)_minmax(430px,0.82fr)] gap-[18px] mt-[18px] mb-[25px]">
                 <!-- TODAY'S SCHEDULE CARD -->
-                <section class="bg-white border border-[#e7eff8] rounded-[18px] shadow-[0_10px_35px_rgba(38,107,180,.07)] p-5">
+                <section class="bg-white border border-[#e7eff8] rounded-[18px] shadow-[0_10px_35px_rgba(38,107,180,.07)] p-5 flex flex-col">
                     <div class="flex items-center justify-between mb-[18px]">
                         <div class="flex items-center gap-[13px]">
                             <span class="w-[35px] h-[35px] flex items-center justify-center text-[#114b9e]"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="16" rx="2"/><path d="M8 3v4M16 3v4M4 9h16"/><path d="M8 13h3M8 17h3M14 13h2"/></svg></span>
                             <h2 class="text-[#103f8c] text-[20px] font-extrabold">Today's Schedule</h2>
                         </div>
-                        <a href="setup.html" class="flex items-center gap-[7px] text-[#0675ee] text-[13px] font-semibold">View full schedule <span class="text-[18px]">→</span></a>
+                        <a href="schedule.html" class="flex items-center gap-[7px] text-[#0675ee] text-[13px] font-semibold">View full schedule <span class="flex items-center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14" /><path d="M13 6l6 6-6 6" /></svg></span></a>
                     </div>
-                    <div id="scheduleList"></div>
+                    <div id="scheduleList" class="flex-1"></div>
+                    <div class="flex gap-2 px-[18px] mt-auto pb-5">
+                        <button type="button" class="flex-1 relative overflow-hidden min-h-[60px] flex items-center gap-2 px-4 py-2 border-none rounded-[15px] text-white text-left transition-all hover:-translate-y-0.5 cursor-pointer shadow-[0_8px_22px_rgba(49,136,237,.18)]" id="addTodayButton" style="background: linear-gradient(120deg, #398fff, #55a3ff);">
+                            <div class="relative z-[2] w-[38px] h-[38px] flex-none flex items-center justify-center rounded-[11px] bg-white/20"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="16" rx="2"/><path d="M8 3v4M16 3v4M4 9h16"/><path d="M12 12v6M9 15h6"/></svg></div>
+                            <div class="relative z-[2] flex-1"><strong class="block text-[13px] leading-[1.2]">Add Schedule for Today</strong><span class="block mt-0.5 text-[10px] opacity-90">Add something only for today</span></div>
+                            <span class="relative z-[2] flex items-center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14" /><path d="M13 6l6 6-6 6" /></svg></span>
+                        </button>
+                        <button type="button" class="flex-1 relative overflow-hidden min-h-[60px] flex items-center gap-2 px-4 py-2 border-none rounded-[15px] text-white text-left transition-all hover:-translate-y-0.5 cursor-pointer shadow-[0_8px_22px_rgba(130,116,232,.18)]" id="editScheduleButton" style="background: linear-gradient(120deg, #8a67f2, #a68aff);">
+                            <div class="relative z-[2] w-[38px] h-[38px] flex-none flex items-center justify-center rounded-[11px] bg-white/20"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9l-4-4L4 16v4z"/><path d="M13 6l4 4"/></svg></div>
+                            <div class="relative z-[2] flex-1"><strong class="block text-[13px] leading-[1.2]">Edit Full or Fixed Schedule</strong><span class="block mt-0.5 text-[10px] opacity-90">Change your regular schedule</span></div>
+                            <span class="relative z-[2] flex items-center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14" /><path d="M13 6l6 6-6 6" /></svg></span>
+                        </button>
+                    </div>
                 </section>
 
                 <!-- RECOMMENDED CARD -->
-                <section class="bg-white border border-[#e7eff8] rounded-[18px] shadow-[0_10px_35px_rgba(38,107,180,.07)] p-5">
+                <section class="bg-white border border-[#e7eff8] rounded-[18px] shadow-[0_10px_35px_rgba(38,107,180,.07)] p-5 h-[420px] flex flex-col">
                     <div class="flex items-center justify-between mb-[18px]">
                         <div class="flex items-center gap-[13px]">
                             <span class="text-[27px] text-[#124b9d]">✦</span>
                             <h2 class="text-[#103f8c] text-[20px] font-extrabold">Recommended for you</h2>
                         </div>
                     </div>
-                    <div id="recommendationList" class="flex flex-col gap-[17px] pt-[7px]"></div>
+                    <div id="recommendationList" class="flex flex-col gap-[17px] pt-[7px] flex-1 overflow-y-auto pr-1"></div>
                 </section>
             </div>
 
-            <!-- BOTTOM ACTIONS -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                <button type="button" class="relative overflow-hidden min-h-[90px] flex items-center gap-[14px] px-[27px] py-[15px] border-none rounded-[17px] text-white text-left transition-all hover:-translate-y-[3px] cursor-pointer shadow-[0_8px_22px_rgba(49,136,237,.18)]" id="addTodayButton" style="background: linear-gradient(120deg, #398fff, #55a3ff);">
-                    <span class="absolute w-[250px] h-[250px] rounded-full pointer-events-none" style="right: -100px; top: -130px; background: rgba(255,255,255,.12);"></span>
-                    <div class="relative z-[2] w-[57px] h-[57px] flex-none flex items-center justify-center rounded-[13px] bg-white/20"><svg width="37" height="37" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="16" rx="2"/><path d="M8 3v4M16 3v4M4 9h16"/><path d="M12 12v6M9 15h6"/></svg></div>
-                    <div class="relative z-[2] flex-1"><strong class="block text-[16px] leading-[1.2]">Add Schedule for Today</strong><span class="block mt-1 text-[12px] opacity-90">Add something only for today</span></div>
-                    <span class="relative z-[2] text-[28px]">→</span>
-                </button>
-                <button type="button" class="relative overflow-hidden min-h-[90px] flex items-center gap-[14px] px-[27px] py-[15px] border-none rounded-[17px] text-white text-left transition-all hover:-translate-y-[3px] cursor-pointer shadow-[0_8px_22px_rgba(130,116,232,.18)]" id="editScheduleButton" style="background: linear-gradient(120deg, #8a67f2, #a68aff);">
-                    <span class="absolute w-[250px] h-[250px] rounded-full pointer-events-none" style="right: -100px; top: -130px; background: rgba(255,255,255,.12);"></span>
-                    <div class="relative z-[2] w-[57px] h-[57px] flex-none flex items-center justify-center rounded-[13px] bg-white/20"><svg width="37" height="37" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9l-4-4L4 16v4z"/><path d="M13 6l4 4"/></svg></div>
-                    <div class="relative z-[2] flex-1"><strong class="block text-[16px] leading-[1.2]">Edit Full or Fixed Schedule</strong><span class="block mt-1 text-[12px] opacity-90">Change your regular schedule</span></div>
-                    <span class="relative z-[2] text-[28px]">→</span>
-                </button>
-            </div>
         </section>
     </main>
 </div>
@@ -196,7 +184,8 @@
     const today = new Date();
     const dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
     const todayName = dayNames[today.getDay()];
-    const todayKey = today.toISOString().split('T')[0];
+    const todayKey = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
+    const legacyKey = today.toISOString().split('T')[0];
     document.getElementById('currentDate').textContent = today.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
 
     // ADAPTERS
@@ -217,6 +206,20 @@
         const p = t.split(/–|-/).map(function(x) { return x.trim(); });
         return [to24(p[0] || '08:00'), to24(p[1] || '09:00')];
     }
+    function showToast(text, ok) {
+        let t = document.getElementById('eb-toast');
+        if (!t) {
+            t = document.createElement('div');
+            t.id = 'eb-toast';
+            t.style.cssText = 'position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:9999;max-width:min(480px,90vw);padding:12px 20px;border-radius:12px;font-family:Nunito,sans-serif;font-size:15px;font-weight:700;color:#fff;box-shadow:0 8px 22px rgba(0,0,0,.18);transition:opacity .3s;';
+            document.body.appendChild(t);
+        }
+        t.style.background = ok ? '#2ECC71' : '#e74c3c';
+        t.textContent = text;
+        t.style.opacity = '1';
+        clearTimeout(t._timer);
+        t._timer = setTimeout(function() { t.style.opacity = '0'; }, 3200);
+    }
     const normSubjects = subjects.map(function(s) {
         const r = splitRange(s.time);
         return { name: s.name, startTime: r[0], endTime: r[1], repeatDays: splitDays(s.days) };
@@ -231,7 +234,7 @@
     function getTodayOnly() {
         let saved = [];
         try { saved = JSON.parse(localStorage.getItem('eb_today_schedules') || '[]'); } catch (e) { saved = []; }
-        return saved.filter(function(x) { return x.date === todayKey; });
+        return saved.filter(function(x) { return x.date === todayKey || x.date === legacyKey; });
     }
     const todayOnlySchedules = getTodayOnly();
 
@@ -366,15 +369,16 @@
         if (has(/exercise|sports/i)) return { title: 'You have ' + formatDuration(dur) + ' free!', description: 'A short walk or exercise session could help refresh you before your next activity.', button: 'Take a Short Exercise' };
         return { title: 'You have ' + formatDuration(dur) + ' free!', description: 'Nova found a vacant period. You can study, finish schoolwork, rest, or do something you enjoy.', button: 'Plan This Time' };
     }
+    function setText(id, v) { var el = document.getElementById(id); if (el) el.textContent = v; }
     (function renderAI() {
         const s = generateSuggestion();
         const energy = getEnergyLevel(freeMins);
-        document.getElementById('aiTitle').textContent = s.title;
-        document.getElementById('aiDescription').textContent = s.description;
-        document.getElementById('batteryIcon').textContent = energy.icon;
-        document.getElementById('batteryText').textContent = energy.level;
-        document.getElementById('batteryMessage').textContent = energy.message;
-        document.getElementById('energyComic').src = 'images/eb_welcome_comic.png';
+        setText('aiTitle', s.title);
+        setText('aiDescription', s.description);
+        setText('batteryIcon', energy.icon);
+        setText('batteryText', energy.level);
+        setText('batteryMessage', energy.message);
+        var energyImg = document.getElementById('energyComic'); if (energyImg) energyImg.src = 'images/eb_welcome_comic.png';
         document.getElementById('focusButton').innerHTML = '<span>▶</span><span>' + s.button + '</span><span>→</span>';
     })();
 
@@ -402,8 +406,8 @@
                 '<p class="text-[#6b8bb4] text-[11px] leading-[1.4]">' + r.desc + '</p></div>' +
                 '<button type="button" class="border-none min-w-[82px] px-3 py-[11px] rounded-[13px] text-[11px] font-bold cursor-pointer" style="' + BTN[r.btnCls] + '">' + r.btn + '</button>';
             d.querySelector('button').addEventListener('click', function() {
-                if (/break/i.test(r.title)) alert('Break time! Take some time to rest.');
-                else alert(r.title + ' added to your plan.');
+                if (/break/i.test(r.title)) showToast('Break time! Take some time to rest.', true);
+                else showToast(r.title + ' added to your plan.', true);
             });
             box.appendChild(d);
         });
@@ -439,7 +443,7 @@
         todayModal.classList.toggle('hidden', !show);
         todayModal.classList.toggle('flex', show);
     }
-    document.getElementById('addTodayButton').addEventListener('click', function() { showModal(true); });
+    document.getElementById('addTodayButton').addEventListener('click', function() { window.location.href = 'schedule.html?action=add'; });
     todayModal.querySelectorAll('[data-close]').forEach(function(b) {
         b.addEventListener('click', function() { showModal(false); });
     });
@@ -448,8 +452,8 @@
         const name = document.getElementById('todayName').value.trim();
         const st = document.getElementById('todayStart').value;
         const en = document.getElementById('todayEnd').value;
-        if (!name || !st || !en) { alert('Please complete all schedule details.'); return; }
-        if (timeToMinutes(en) <= timeToMinutes(st)) { alert('End time must be later than start time.'); return; }
+        if (!name || !st || !en) { showToast('Please complete all schedule details.'); return; }
+        if (timeToMinutes(en) <= timeToMinutes(st)) { showToast('End time must be later than start time.'); return; }
         let all = [];
         try { all = JSON.parse(localStorage.getItem('eb_today_schedules') || '[]'); } catch (e) { all = []; }
         all.push({ id: Date.now(), date: todayKey, name: name, startTime: st, endTime: en });
@@ -458,14 +462,14 @@
     });
 
     // EDIT + VIEW SCHEDULE → setup.html | FOCUS → best free block
-    document.getElementById('editScheduleButton').addEventListener('click', function() { window.location.href = 'setup.html'; });
+    document.getElementById('editScheduleButton').addEventListener('click', function() { window.location.href = 'schedule.html?action=edit'; });
     document.querySelectorAll('.view-schedule').forEach(function(b) {
         b.addEventListener('click', function() { window.location.href = 'setup.html'; });
     });
     document.getElementById('focusButton').addEventListener('click', function() {
         const best = getBestFreeBlock();
-        if (!best) { alert('Your schedule is packed today. Try to take a short break whenever possible.'); return; }
-        alert('Nova suggests using your free time from ' + formatTime(best.start) + ' to ' + formatTime(best.end) + '.');
+        if (!best) { showToast('Your schedule is packed today. Try to take a short break when possible.'); return; }
+        showToast('Nova suggests using your free time from ' + formatTime(best.start) + ' to ' + formatTime(best.end) + '.', true);
     });
     function getBestFreeBlock() {
         const free = createTimeline().filter(function(i) { return i.free; });

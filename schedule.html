@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estudyante Balanse - My Schedule</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>html{scroll-behavior:smooth;}body{background:#f7fbff !important;}</style>
+</head>
+<body style="font-family: 'Baloo 2', sans-serif;">
+
+<!-- APP WRAPPER -->
+<div class="min-h-screen flex text-[#123c8c]" style="background: linear-gradient(90deg, #ffffff 0%, #f7fbff 100%);">
+
+    <!-- SIDEBAR -->
+    <aside class="fixed left-0 top-0 bottom-0 w-[272px] bg-white border-r border-[#edf3fa] z-[100] hidden md:flex flex-col overflow-hidden no-print">
+        <!-- SIDEBAR LOGO -->
+        <div class="w-full px-[30px] pt-5 pb-[18px] flex items-center">
+            <img src="images/eb_login_logo.png" alt="Estudyante Balanse" class="w-[185px] h-auto block object-contain">
+        </div>
+        <!-- SIDEBAR NAV -->
+        <nav class="flex flex-col gap-2 px-4 pt-5">
+            <a href="dashboard.html" class="h-[54px] flex items-center gap-[18px] px-[22px] rounded-[17px] text-[#6080b2] hover:bg-[#f1f7ff] hover:text-[#147ced] hover:translate-x-0.5 text-[16px] font-semibold transition-all">
+                <span class="w-[25px] h-[25px] flex items-center justify-center flex-none"><svg width="23" height="23" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.5L12 4l9 7.5v8a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-8z"/></svg></span>
+                <span>Dashboard</span>
+            </a>
+            <a href="schedule.html" class="h-[54px] flex items-center gap-[18px] px-[22px] rounded-[17px] text-[16px] font-bold transition-all text-white" style="background: linear-gradient(135deg, #3188ed, #5b9ff2); box-shadow: 0 8px 22px rgba(49,136,237,.20);">
+                <span class="w-[25px] h-[25px] flex items-center justify-center flex-none"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="16" rx="2"/><path d="M8 3v4M16 3v4M4 9h16"/><path d="M8 13h3M8 17h3M14 13h2"/></svg></span>
+                <span>My Schedule</span>
+            </a>
+        </nav>
+        <!-- SIDEBAR LOGOUT -->
+        <div class="mt-auto px-4 pb-6 relative z-10">
+            <a href="index.html" class="h-[54px] flex items-center gap-[18px] px-[22px] rounded-[17px] text-[#df5a5a] hover:bg-[#fff1f1] text-[16px] font-semibold transition-all">
+                <span class="w-[25px] h-[25px] flex items-center justify-center flex-none"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/></svg></span>
+                <span>Logout</span>
+            </a>
+        </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="min-h-screen ml-0 md:ml-[272px] w-full md:w-[calc(100%-272px)] px-0 md:px-[25px] pb-[30px]">
+        <!-- TOPBAR -->
+        <header class="h-[82px] flex items-center justify-between px-[15px] md:px-0 border-b border-[#e9f0f8]">
+
+            <div class="hidden md:flex items-center h-full w-full gap-5">
+                <div class="flex items-center gap-3 text-[#486da5] text-[14px] font-semibold">
+                    <span class="flex items-center"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="16" rx="2"/><path d="M8 3v4M16 3v4M4 9h16"/><path d="M8 13h3M8 17h3M14 13h2"/></svg></span>
+                    <span id="currentDate">Tue, Aug 26, 2026</span>
+                </div>
+                <div class="flex items-center gap-[9px] px-[22px] text-[#123c8c] text-[15px] font-bold" id="topGreet"><span class="text-[#ffbc1b] text-[25px] leading-none">☀</span><span>Good day!</span></div>
+                <button class="w-[48px] h-[48px] flex items-center justify-center rounded-full bg-white border-2 border-[#9fd0ff] text-[#35609a] ml-auto" type="button"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg></button>
+
+            </div>
+        </header>
+
+        <!-- PAGE CONTENT -->
+        <section class="pt-[22px] px-[15px] md:px-0">
+            <div class="grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_330px] gap-[18px] items-start">
+
+                <!-- CALENDAR AREA -->
+                <section>
+                    <div class="bg-white border border-[#e4edf7] rounded-[17px] shadow-[0_8px_30px_rgba(35,100,170,.07)] overflow-hidden mb-10">
+                        <!-- CALENDAR HEADER -->
+                        <div class="min-h-[92px] px-5 py-[18px] flex flex-wrap items-center justify-between gap-[15px]">
+                            <div class="flex items-center gap-[14px]">
+                                <div>
+                                    <div class="flex items-center gap-3">
+                                        <span class="flex-none flex items-center text-[#114b9e]"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></span>
+                                        <h2 class="text-[#123c8c] text-[27px] font-extrabold leading-none">My Schedule</h2>
+                                    </div>
+                                    <p class="text-[#6b8ab2] text-[13px] mt-[5px] pl-[40px]">View and manage your weekly schedule.</p>
+                                </div>
+                            </div>
+                            <!-- CALENDAR CONTROLS -->
+                            <div class="flex items-center gap-[9px] flex-wrap justify-end">
+                            </div>
+                        </div>
+                        <!-- WEEK HEADER -->
+                        <div class="grid gap-[2px] px-[14px]" style="grid-template-columns: 55px repeat(7, minmax(0,1fr));" id="weekHeader"></div>
+                        <!-- WEEK GRID -->
+                        <div class="grid gap-0 px-[14px] pb-[70px] min-h-[850px]" style="grid-template-columns: 55px repeat(7, minmax(0,1fr));" id="calendarGrid"></div>
+                    </div>
+
+                </section>
+
+                <!-- EDIT PANEL (center modal, hidden until Edit pressed) -->
+                <div id="editPanel" class="hidden fixed inset-0 z-[200] items-center justify-center p-5" style="background: rgba(5,35,80,.35); backdrop-filter: blur(5px);">
+                <div class="w-[min(640px,100%)] max-h-[85vh] overflow-y-auto bg-white border border-[#e4edf7] rounded-[17px] shadow-[0_25px_70px_rgba(0,0,0,.18)] p-5">
+                    <div class="flex items-center justify-between mb-3">
+                        <h2 class="text-[#103f8c] text-[20px] font-extrabold">Edit Full Schedule</h2>
+                        <button id="closeEditPanel" type="button" class="h-[38px] px-[18px] border border-[#dceaf8] bg-[#f4f9ff] text-[#0874e9] rounded-[9px] text-[12px] font-bold cursor-pointer hover:bg-[#e8f3ff]">Done</button>
+                    </div>
+                    <div id="editList" class="flex flex-col gap-2"></div>
+                </div>
+                </div>
+
+                <!-- RIGHT SIDEBAR -->
+                <aside class="flex flex-col gap-[17px]">
+                    <!-- MINI CALENDAR -->
+                    <section class="bg-white border border-[#e4edf7] rounded-[17px] shadow-[0_8px_30px_rgba(35,100,170,.07)] p-[17px]">
+                        <div class="flex items-center justify-between mb-[15px]">
+                            <button class="w-7 h-7 border-none bg-transparent text-[#0874e9] text-[28px] leading-none cursor-pointer" id="prevMonth" type="button">‹</button>
+                            <h2 class="text-[#123f8d] text-[18px] font-extrabold" id="monthName">August 2026</h2>
+                            <button class="w-7 h-7 border-none bg-transparent text-[#0874e9] text-[28px] leading-none cursor-pointer" id="nextMonth" type="button">›</button>
+                        </div>
+                        <div class="grid grid-cols-7 text-center mb-[9px]">
+                            <span class="text-[#6384af] text-[9px] font-semibold">Mon</span><span class="text-[#6384af] text-[9px] font-semibold">Tue</span><span class="text-[#6384af] text-[9px] font-semibold">Wed</span><span class="text-[#6384af] text-[9px] font-semibold">Thu</span><span class="text-[#6384af] text-[9px] font-semibold">Fri</span><span class="text-[#6384af] text-[9px] font-semibold">Sat</span><span class="text-[#6384af] text-[9px] font-semibold">Sun</span>
+                        </div>
+                        <div class="grid grid-cols-7 text-center gap-y-[6px]" id="calendarDays"></div>
+                    </section>
+
+                    <!-- ACTION BUTTONS -->
+                    <div class="flex flex-col gap-[9px]">
+                        <button type="button" class="relative overflow-hidden min-h-[60px] flex items-center gap-2 px-4 py-2 border-none rounded-[15px] text-white text-left transition-all hover:-translate-y-0.5 cursor-pointer shadow-[0_8px_22px_rgba(49,136,237,.18)]" id="addActivity" style="background: linear-gradient(120deg, #398fff, #55a3ff);">
+                            <div class="relative z-[2] w-[38px] h-[38px] flex-none flex items-center justify-center rounded-[11px] bg-white/20"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="16" rx="2"/><path d="M8 3v4M16 3v4M4 9h16"/><path d="M12 12v6M9 15h6"/></svg></div>
+                            <div class="relative z-[2] flex-1"><strong class="block text-[13px] leading-[1.2]">Add Activity</strong><span class="block mt-0.5 text-[10px] opacity-90">Add a new schedule</span></div>
+                            <span class="relative z-[2] flex items-center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14" /><path d="M13 6l6 6-6 6" /></svg></span>
+                        </button>
+                        <button type="button" class="relative overflow-hidden min-h-[60px] flex items-center gap-2 px-4 py-2 border-none rounded-[15px] text-white text-left transition-all hover:-translate-y-0.5 cursor-pointer shadow-[0_8px_22px_rgba(130,116,232,.18)]" id="editSchedule" style="background: linear-gradient(120deg, #8a67f2, #a68aff);">
+                            <div class="relative z-[2] w-[38px] h-[38px] flex-none flex items-center justify-center rounded-[11px] bg-white/20"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9l-4-4L4 16v4z"/><path d="M13 6l4 4"/></svg></div>
+                            <div class="relative z-[2] flex-1"><strong class="block text-[13px] leading-[1.2]">Edit Schedule</strong><span class="block mt-0.5 text-[10px] opacity-90">Modify existing</span></div>
+                            <span class="relative z-[2] flex items-center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14" /><path d="M13 6l6 6-6 6" /></svg></span>
+                        </button>
+                    </div>
+                </aside>
+            </div>
+        </section>
+    </main>
+</div>
+
+<!-- ADD TODAY MODAL -->
+<div class="fixed inset-0 z-[200] hidden items-center justify-center p-5" id="todayModal" style="background: rgba(5,35,80,.35); backdrop-filter: blur(5px);">
+    <div class="relative w-[min(500px,100%)] p-7 rounded-[22px] bg-white shadow-[0_25px_70px_rgba(0,0,0,.18)]">
+        <button type="button" class="absolute top-[15px] right-[18px] w-[35px] h-[35px] flex items-center justify-center border-none rounded-full text-[#123c8c] bg-[#edf6ff] text-[22px] cursor-pointer" data-close="todayModal">×</button>
+        <h2 class="text-[#123c8c] text-[24px] font-extrabold">Add Schedule for Today</h2>
+        <p class="mt-1 mb-5 text-[#6d8eb5] text-[14px]">Add an activity for the selected day.</p>
+        <label for="todayName" class="block mt-3 mb-[5px] text-[#123c8c] text-[14px] font-bold">Activity / Subject</label>
+        <input type="text" id="todayName" placeholder="e.g. Finish Mathematics assignment" class="w-full p-3 border border-[#cfe4f8] rounded-[11px] outline-none text-[#123c8c] bg-white text-[14px] focus:border-[#3188ed]">
+        <div class="grid grid-cols-2 gap-3">
+            <div><label for="todayStart" class="block mt-3 mb-[5px] text-[#123c8c] text-[14px] font-bold">Start Time</label><input type="time" id="todayStart" class="w-full p-3 border border-[#cfe4f8] rounded-[11px] outline-none text-[#123c8c] bg-white text-[14px] focus:border-[#3188ed]"></div>
+            <div><label for="todayEnd" class="block mt-3 mb-[5px] text-[#123c8c] text-[14px] font-bold">End Time</label><input type="time" id="todayEnd" class="w-full p-3 border border-[#cfe4f8] rounded-[11px] outline-none text-[#123c8c] bg-white text-[14px] focus:border-[#3188ed]"></div>
+        </div>
+        <button type="button" class="w-full mt-5 p-[13px] border-none rounded-xl text-white text-[15px] font-bold cursor-pointer" id="saveToday" style="background: linear-gradient(135deg, #3188ed, #5a9df1);">Add to Schedule</button>
+    </div>
+</div>
+
+<!-- EDIT SCHEDULE MODAL -->
+<div class="fixed inset-0 z-[200] hidden items-center justify-center p-5" id="editModal" style="background: rgba(5,35,80,.35); backdrop-filter: blur(5px);">
+    <div class="relative w-[min(500px,100%)] p-7 rounded-[22px] bg-white shadow-[0_25px_70px_rgba(0,0,0,.18)]">
+        <button type="button" class="absolute top-[15px] right-[18px] w-[35px] h-[35px] flex items-center justify-center border-none rounded-full text-[#123c8c] bg-[#edf6ff] text-[22px] cursor-pointer" data-close="editModal">×</button>
+        <h2 class="text-[#123c8c] text-[24px] font-extrabold">Edit Schedule</h2>
+        <p class="mt-1 mb-5 text-[#6d8eb5] text-[14px]">Update the details below.</p>
+        <input type="hidden" id="editId">
+        <input type="hidden" id="editKind">
+        <label for="editName" class="block mt-3 mb-[5px] text-[#123c8c] text-[14px] font-bold">Activity / Subject</label>
+        <input type="text" id="editName" placeholder="e.g. Mathematics" class="w-full p-3 border border-[#cfe4f8] rounded-[11px] outline-none text-[#123c8c] bg-white text-[14px] focus:border-[#3188ed]">
+        <div class="grid grid-cols-2 gap-3">
+            <div><label for="editStart" class="block mt-3 mb-[5px] text-[#123c8c] text-[14px] font-bold">Start Time</label><input type="time" id="editStart" class="w-full p-3 border border-[#cfe4f8] rounded-[11px] outline-none text-[#123c8c] bg-white text-[14px] focus:border-[#3188ed]"></div>
+            <div><label for="editEnd" class="block mt-3 mb-[5px] text-[#123c8c] text-[14px] font-bold">End Time</label><input type="time" id="editEnd" class="w-full p-3 border border-[#cfe4f8] rounded-[11px] outline-none text-[#123c8c] bg-white text-[14px] focus:border-[#3188ed]"></div>
+        </div>
+        <button type="button" class="w-full mt-5 p-[13px] border-none rounded-xl text-white text-[15px] font-bold cursor-pointer" id="saveEdit" style="background: linear-gradient(135deg, #3188ed, #5a9df1);">Save Changes</button>
+    </div>
+</div>
+
+<script>
+(function() {
+    // LOAD DATA (flat wizard format)
+    let setup = null;
+    try { setup = JSON.parse(localStorage.getItem('eb_setup') || 'null'); } catch (e) { setup = null; }
+    if (!setup) setup = { subjects: [], commitments: [], priorities: [], studyTime: '', taskTime: '', name: '' };
+
+    function showToast(text, ok) {
+        let t = document.getElementById('eb-toast');
+        if (!t) {
+            t = document.createElement('div');
+            t.id = 'eb-toast';
+            t.style.cssText = 'position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:9999;max-width:min(480px,90vw);padding:12px 20px;border-radius:12px;font-family:Nunito,sans-serif;font-size:15px;font-weight:700;color:#fff;box-shadow:0 8px 22px rgba(0,0,0,.18);transition:opacity .3s;';
+            document.body.appendChild(t);
+        }
+        t.style.background = ok ? '#2ECC71' : '#e74c3c';
+        t.textContent = text;
+        t.style.opacity = '1';
+        clearTimeout(t._timer);
+        t._timer = setTimeout(function() { t.style.opacity = '0'; }, 3200);
+    }
+
+    // ADAPTERS
+    function splitDays(d) {
+        if (Array.isArray(d)) return d;
+        if (!d) return [];
+        return d.split(',').map(function(x) { return x.trim().substring(0, 3); });
+    }
+    function to24(t) {
+        const m = String(t || '').match(/(\d{1,2}):(\d{2})\s*([AP]M)?/i);
+        if (!m) return '08:00';
+        let h = Number(m[1]);
+        if (m[3]) { const ap = m[3].toUpperCase(); if (ap === 'PM' && h < 12) h += 12; if (ap === 'AM' && h === 12) h = 0; }
+        return String(h).padStart(2, '0') + ':' + m[2];
+    }
+    function splitRange(t) {
+        if (!t) return ['08:00', '09:00'];
+        const p = t.split(/–|-/).map(function(x) { return x.trim(); });
+        return [to24(p[0] || '08:00'), to24(p[1] || '09:00')];
+    }
+    let subjects = (setup.subjects || []).map(function(s) {
+        const r = splitRange(s.time);
+        return { name: s.name, startTime: r[0], endTime: r[1], repeatDays: splitDays(s.days) };
+    });
+    let commitments = (setup.commitments || []).map(function(c) {
+        const r = splitRange(c.time);
+        return { name: c.name, startTime: r[0], endTime: r[1], repeatDays: splitDays(c.days), icon: c.icon || '💼' };
+    });
+
+    // DATE / WEEK STATE (Monday-first)
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    const D3 = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    let weekOffset = 0;
+    let viewMode = 'week';
+    let selectedDate = new Date(today);
+    document.getElementById('currentDate').textContent = today.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+
+    function mondayOf(base) {
+        const d = new Date(base);
+        const dow = (d.getDay() + 6) % 7;
+        d.setDate(d.getDate() - dow);
+        return d;
+    }
+    function weekDates() {
+        const mon = mondayOf(new Date(today.getFullYear(), today.getMonth(), today.getDate() + weekOffset * 7));
+        const out = [];
+        for (let i = 0; i < 7; i++) { const d = new Date(mon); d.setDate(mon.getDate() + i); out.push(d); }
+        return out;
+    }
+    function sameDay(a, b) { return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate(); }
+
+    // TIME HELPERS
+    function timeToMinutes(t) { if (!t) return 0; const p = t.split(':'); return Number(p[0]) * 60 + Number(p[1]); }
+    function formatTime(t) {
+        if (!t) return '';
+        const p = t.split(':');
+        let h = Number(p[0]);
+        const ap = h >= 12 ? 'PM' : 'AM';
+        h = h % 12 || 12;
+        return h + ':' + p[1] + ' ' + ap;
+    }
+    function formatDuration(m) {
+        const h = Math.floor(m / 60), mm = m % 60;
+        if (!h) return mm + 'm';
+        if (!mm) return h + 'h';
+        return h + 'h ' + mm + 'm';
+    }
+
+    // DAY GRID: 07:00–22:00 → % positions
+    const DAY_START = 6 * 60, DAY_END = 22 * 60, DAY_SPAN = DAY_END - DAY_START;
+    function pct(t) { return Math.max(0, Math.min(100, (timeToMinutes(t) - DAY_START) / DAY_SPAN * 100)); }
+    function durPct(a, b) { return Math.max(0, (timeToMinutes(b) - timeToMinutes(a)) / DAY_SPAN * 100); }
+
+    const EV_STYLE = {
+        blue: 'background: #e4f1ff; border-color: #d4e8fb; color: #1761b6;',
+        green: 'background: #dff6f1; border-color: #ccefe8; color: #168e7a;',
+        yellow: 'background: #fff2c9; border-color: #ffebaf; color: #a96c00;',
+        purple: 'background: #eee9ff; border-color: #e3dcff; color: #674ed0;',
+        red: 'background: #ffe1e7; border-color: #ffd2da; color: #d94759;',
+        orange: 'background: #ffeadb; border-color: #ffe0cb; color: #c56d28;',
+        pink: 'background: #ffe1e8; border-color: #ffd4dc; color: #d64e6b;'
+    };
+    const POINT = { blue: '#4b9cff', yellow: '#ffb72b', purple: '#7961e8', green: '#1ab39b', red: '#ed5964', orange: '#ef9651', pink: '#ef7891' };
+    const PATHS = {
+        book: '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path d="M4 5.5V21M8 7h8M8 11h8"/>',
+        briefcase: '<rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>',
+        spark: '<path d="M12 3l1.8 4.7 4.7 1.8-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8z"/>',
+        clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/>'
+    };
+    const EMOJI_MAP = { '📖': 'book', '✨': 'spark', '💼': 'briefcase', '🏠': 'briefcase', '🏫': 'book', '⚽': 'clock', '🚗': 'clock', '⏰': 'clock', '📌': 'clock', '☕': 'clock', '🎮': 'clock', '👥': 'clock', '♥': 'clock', '⚗': 'clock', '🏋': 'clock', '⚑': 'clock', '▣': 'book', '◒': 'clock' };
+    function iconFor(emoji, size, sw) {
+        const s = size || 14;
+        return '<svg width="' + s + '" height="' + s + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="' + (sw || 1.7) + '" stroke-linecap="round" stroke-linejoin="round">' + (PATHS[EMOJI_MAP[emoji] || 'clock'] || PATHS.clock) + '</svg>';
+    }
+    const SUBJ_COLORS = ['blue', 'green', 'yellow', 'purple'];
+
+    function getDeleted() { try { return JSON.parse(localStorage.getItem('eb_deleted') || '[]'); } catch (e) { return []; } }
+    function getEdits() { try { return JSON.parse(localStorage.getItem('eb_edits') || '{}'); } catch (e) { return {}; } }
+    function eventsForDay(d3, dateObj) {
+        const out = [];
+        const deleted = getDeleted();
+        const edits = getEdits();
+        subjects.forEach(function(s, i) {
+            if (!s.repeatDays.includes(d3)) return;
+            const eid = 'S' + i;
+            if (deleted.indexOf(eid) >= 0) return;
+            const ov = edits[eid] || {};
+            out.push({ eid: eid, kind: 'fixed', name: ov.name || s.name, start: ov.start || s.startTime, end: ov.end || s.endTime, icon: '📖', color: SUBJ_COLORS[i % SUBJ_COLORS.length], type: 'Class' });
+        });
+        commitments.forEach(function(c, j) {
+            if (!c.repeatDays.includes(d3)) return;
+            const eid = 'C' + j;
+            if (deleted.indexOf(eid) >= 0) return;
+            const ov = edits[eid] || {};
+            out.push({ eid: eid, kind: 'fixed', name: ov.name || c.name, start: ov.start || c.startTime, end: ov.end || c.endTime, icon: c.icon, color: 'red', type: 'Commitment' });
+        });
+        if (dateObj) {
+            todayOnlyFor(isoOf(dateObj)).forEach(function(t) {
+                out.push({ name: t.name, start: t.startTime, end: t.endTime, icon: '📌', color: 'green', type: 'Today only', todayId: t.id });
+            });
+        }
+        return out.sort(function(a, b) { return timeToMinutes(a.start) - timeToMinutes(b.start); });
+    }
+    function isoOf(d) { return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+    function todayOnlyFor(iso) {
+        let legacy = '';
+        try { legacy = today.toISOString().split('T')[0]; } catch (e) { legacy = ''; }
+        try { return (JSON.parse(localStorage.getItem('eb_today_schedules') || '[]')).filter(function(x) { return x.date === iso || (legacy && x.date === legacy); }); }
+        catch (e) { return []; }
+    }
+
+    // RENDER WEEK
+    function renderWeek() {
+        const dates = weekDates();
+        const showDates = viewMode === 'day' ? [selectedDate] : dates;
+        const wh = document.getElementById('weekHeader');
+        let html = '<div class="w-[55px]"></div>';
+        showDates.forEach(function(d) {
+            const isToday = sameDay(d, today);
+            html += '<div class="h-[55px] mx-[2px] flex flex-col items-center justify-center ' + (isToday ? 'text-white rounded-[9px_9px_0_0]' : 'text-[#174b93] bg-[#f1f7fd] rounded-[9px_9px_0_0]') + '"' + (isToday ? ' style="background: linear-gradient(135deg, #328ef5, #3d8eea);"' : '') + '>' +
+                '<strong class="text-[13px] leading-none">' + D3[d.getDay()] + '</strong>' +
+                '<span class="text-[10px] mt-1 ' + (isToday ? 'text-[#eaf4ff]' : 'text-[#6d8db6]') + '">' + d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) + '</span></div>';
+        });
+        wh.innerHTML = html;
+
+        const grid = document.getElementById('calendarGrid');
+        let g = '<div class="relative grid pr-2" style="grid-template-rows: repeat(17, 1fr);">';
+        for (let h = 6; h <= 22; h++) g += '<span class="text-[#6685ae] text-[10px] text-right" style="transform: translateY(-5px);">' + (((h + 11) % 12) + 1) + (h < 12 ? ' AM' : ' PM') + '</span>';
+        g += '</div>';
+        showDates.forEach(function(d) {
+            const d3 = D3[d.getDay()];
+            const isSel = sameDay(d, selectedDate);
+            g += '<div class="relative border-l border-[#edf2f7] ' + (isSel ? 'bg-[#fbfdff] shadow-[inset_0_0_0_1px_#68adff]' : '') + '" style="background-image: repeating-linear-gradient(to bottom, transparent 0, transparent calc(5.88% - 1px), #edf2f7 calc(5.88% - 1px), #edf2f7 5.88%);">';
+            eventsForDay(d3, d).forEach(function(e) {
+                g += '<div class="absolute rounded-[9px] overflow-hidden flex flex-col cursor-pointer transition-all hover:scale-[1.025] hover:z-10 hover:shadow-[0_5px_15px_rgba(30,90,160,.15)]" data-event="' + e.name + '" style="left: 5px; right: 5px; top: ' + pct(e.start) + '%; height: ' + durPct(e.start, e.end) + '%; padding: 7px; ' + EV_STYLE[e.color] + '" title="' + e.name + '">' +
+                    '<span class="text-[15px] mb-[2px] leading-none flex">' + iconFor(e.icon, 15, 1.7) + '</span>' +
+                    '<strong class="text-[12px] leading-[1.1] font-extrabold">' + e.name + '</strong>' +
+                    '<small class="text-[10px] mt-[3px] leading-[1.1] opacity-80">' + formatTime(e.start) + ' - ' + formatTime(e.end) + '</small></div>';
+            });
+            g += '</div>';
+        });
+        grid.innerHTML = g;
+        grid.querySelectorAll('[data-event]').forEach(function(el) {
+            el.addEventListener('click', function() { showToast(el.getAttribute('data-event'), true); });
+        });
+    }
+
+    // EDIT PANEL (only place where schedules can be changed)
+    function editRow(eid, kind, name, meta) {
+        return '<div class="flex items-center gap-3 bg-white border border-[#e0edfb] rounded-xl p-3 mb-2">' +
+            '<div class="flex-1 min-w-0"><strong class="block text-[14px] text-[#123c8c]">' + name + '</strong>' +
+            '<span class="block text-[12px] text-[#6684b3]">' + meta + '</span></div>' +
+            '<button class="h-[36px] px-4 rounded-[10px] border border-[#dceaf8] bg-[#f4f9ff] text-[#0874e9] text-[12px] font-bold cursor-pointer" data-edit="' + eid + '" data-kind="' + kind + '">Edit</button>' +
+            '<button class="h-[36px] px-4 rounded-[10px] border-none bg-[#fff1f1] text-[#df5a5a] text-[12px] font-bold cursor-pointer" data-pdel="' + eid + '" data-kind="' + kind + '">Delete</button></div>';
+    }
+    function renderEditPanel() {
+        const box = document.getElementById('editList');
+        if (!box) return;
+        const deleted = getDeleted();
+        const edits = getEdits();
+        let html = '';
+        html += '<div class="bg-[#f7fbff] border-2 border-dashed border-[#c8e1ff] rounded-xl p-3 mb-3">' +
+            '<div class="grid grid-cols-2 gap-2 mb-2">' +
+            '<select id="newType" class="h-10 px-2 border-2 border-[#c9e2ff] rounded-xl text-sm font-bold text-[#144487] outline-none bg-white"><option value="subject">Subject</option><option value="commitment">Commitment</option></select>' +
+            '<input id="newName" placeholder="Name" class="h-10 px-3 border-2 border-[#c9e2ff] rounded-xl text-sm font-semibold outline-none">' +
+            '<input id="newStart" type="time" value="08:00" class="h-10 px-2 border-2 border-[#c9e2ff] rounded-xl text-sm outline-none">' +
+            '<input id="newEnd" type="time" value="09:00" class="h-10 px-2 border-2 border-[#c9e2ff] rounded-xl text-sm outline-none"></div>' +
+            '<div class="flex flex-wrap gap-[6px] mb-2" id="newDays">' +
+            '<button type="button" data-day="Mon" class="min-w-[42px] h-[32px] px-2 rounded-full text-xs font-bold cursor-pointer bg-[#e7f1fc] text-[#4775a9]">Mon</button>' +
+            '<button type="button" data-day="Tue" class="min-w-[42px] h-[32px] px-2 rounded-full text-xs font-bold cursor-pointer bg-[#e7f1fc] text-[#4775a9]">Tue</button>' +
+            '<button type="button" data-day="Wed" class="min-w-[42px] h-[32px] px-2 rounded-full text-xs font-bold cursor-pointer bg-[#e7f1fc] text-[#4775a9]">Wed</button>' +
+            '<button type="button" data-day="Thu" class="min-w-[42px] h-[32px] px-2 rounded-full text-xs font-bold cursor-pointer bg-[#e7f1fc] text-[#4775a9]">Thu</button>' +
+            '<button type="button" data-day="Fri" class="min-w-[42px] h-[32px] px-2 rounded-full text-xs font-bold cursor-pointer bg-[#e7f1fc] text-[#4775a9]">Fri</button>' +
+            '<button type="button" data-day="Sat" class="min-w-[42px] h-[32px] px-2 rounded-full text-xs font-bold cursor-pointer bg-[#e7f1fc] text-[#4775a9]">Sat</button>' +
+            '<button type="button" data-day="Sun" class="min-w-[42px] h-[32px] px-2 rounded-full text-xs font-bold cursor-pointer bg-[#e7f1fc] text-[#4775a9]">Sun</button></div>' +
+            '<button id="addFixedBtn" class="w-full h-[42px] rounded-xl bg-[#FFD75A] hover:bg-[#FFCA3A] text-[#17243a] font-extrabold cursor-pointer border-none">+ Add to Fixed Schedule</button></div>';
+        subjects.forEach(function(s, i) {
+            const eid = 'S' + i;
+            if (deleted.indexOf(eid) >= 0) return;
+            const ov = edits[eid] || {};
+            html += editRow(eid, 'fixed', ov.name || s.name, (ov.start || s.startTime) + ' - ' + (ov.end || s.endTime) + ' | ' + s.repeatDays.join(', '));
+        });
+        commitments.forEach(function(c, j) {
+            const eid = 'C' + j;
+            if (deleted.indexOf(eid) >= 0) return;
+            const ov = edits[eid] || {};
+            html += editRow(eid, 'fixed', ov.name || c.name, (ov.start || c.startTime) + ' - ' + (ov.end || c.endTime) + ' | ' + c.repeatDays.join(', '));
+        });
+        let all = [];
+        try { all = JSON.parse(localStorage.getItem('eb_today_schedules') || '[]'); } catch (e) { all = []; }
+        all.forEach(function(t) {
+            html += editRow(t.id, 'today', t.name, t.startTime + ' - ' + t.endTime + ' | ' + t.date);
+        });
+        box.innerHTML = html || '<p class="text-[#6684b3]">No schedules.</p>';
+        let newDays = [];
+        const DAY_ON = 'min-w-[42px] h-[32px] px-2 rounded-full text-xs font-bold cursor-pointer bg-[#4b9af5] text-white';
+        const DAY_OFF = 'min-w-[42px] h-[32px] px-2 rounded-full text-xs font-bold cursor-pointer bg-[#e7f1fc] text-[#4775a9]';
+        box.querySelectorAll('#newDays button').forEach(function(b) {
+            b.addEventListener('click', function() {
+                const dd = b.getAttribute('data-day');
+                if (newDays.indexOf(dd) >= 0) { newDays = newDays.filter(function(x) { return x !== dd; }); b.className = DAY_OFF; }
+                else { newDays.push(dd); b.className = DAY_ON; }
+            });
+        });
+        document.getElementById('addFixedBtn').addEventListener('click', function() {
+            const tp = document.getElementById('newType').value;
+            const nm = document.getElementById('newName').value.trim();
+            const st = document.getElementById('newStart').value;
+            const en = document.getElementById('newEnd').value;
+            if (!nm || !st || !en || !newDays.length) { showToast('Fill name, time, and at least one day.'); return; }
+            if (tp === 'subject') {
+                setup.subjects = setup.subjects || [];
+                setup.subjects.push({ name: nm, time: st + ' - ' + en, days: newDays.join(', ') });
+                subjects.push({ name: nm, startTime: st, endTime: en, repeatDays: newDays.slice() });
+            } else {
+                setup.commitments = setup.commitments || [];
+                setup.commitments.push({ name: nm, time: st + ' - ' + en, days: newDays.join(', '), icon: 'ðŸ’¼' });
+                commitments.push({ name: nm, startTime: st, endTime: en, repeatDays: newDays.slice(), icon: 'ðŸ’¼' });
+            }
+            try { localStorage.setItem('eb_setup', JSON.stringify(setup)); } catch (e) {}
+            renderWeek(); renderSummary(); renderEditPanel();
+        });
+        box.querySelectorAll('[data-pdel]').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                const id = btn.getAttribute('data-pdel');
+                if (btn.getAttribute('data-kind') === 'today') {
+                    let arr = [];
+                    try { arr = JSON.parse(localStorage.getItem('eb_today_schedules') || '[]'); } catch (e) { arr = []; }
+                    localStorage.setItem('eb_today_schedules', JSON.stringify(arr.filter(function(x) { return String(x.id) !== String(id); })));
+                } else {
+                    const del = getDeleted();
+                    if (del.indexOf(id) < 0) del.push(id);
+                    localStorage.setItem('eb_deleted', JSON.stringify(del));
+                }
+                showToast('Deleted.', true);
+                renderWeek(); renderSummary(); renderEditPanel();
+            });
+        });
+        box.querySelectorAll('[data-edit]').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                const id = btn.getAttribute('data-edit');
+                const kind = btn.getAttribute('data-kind');
+                let cur = { name: '', start: '08:00', end: '09:00' };
+                if (kind === 'today') {
+                    let arr = [];
+                    try { arr = JSON.parse(localStorage.getItem('eb_today_schedules') || '[]'); } catch (e) { arr = []; }
+                    const found = arr.filter(function(x) { return String(x.id) === String(id); })[0];
+                    if (found) cur = { name: found.name, start: found.startTime, end: found.endTime };
+                } else {
+                    const edits = getEdits();
+                    const ov = edits[id] || {};
+                    let base = { name: '', start: '08:00', end: '09:00' };
+                    const all = subjects.map(function(s, i) { return { eid: 'S' + i, name: s.name, start: s.startTime, end: s.endTime }; })
+                        .concat(commitments.map(function(c, j) { return { eid: 'C' + j, name: c.name, start: c.startTime, end: c.endTime }; }));
+                    const hit = all.filter(function(x) { return x.eid === id; })[0];
+                    if (hit) base = hit;
+                    cur = { name: ov.name || base.name, start: ov.start || base.start, end: ov.end || base.end };
+                }
+                document.getElementById('editId').value = id;
+                document.getElementById('editKind').value = kind;
+                document.getElementById('editName').value = cur.name || '';
+                document.getElementById('editStart').value = cur.start || '';
+                document.getElementById('editEnd').value = cur.end || '';
+                showEditModal(true);
+            });
+        });
+    }
+
+
+    // SUMMARY (selected day)
+    function renderSummary() {
+        const d3 = D3[selectedDate.getDay()];
+        const evs = eventsForDay(d3, selectedDate);
+        const groups = {};
+        evs.forEach(function(e) {
+            const k = e.type === 'Class' ? 'Classes' : 'Commitments';
+            const c = e.type === 'Class' ? 'blue' : 'red';
+            groups[k] = groups[k] || { n: 0, m: 0, c: c };
+            groups[k].n++;
+            groups[k].m += Math.max(0, timeToMinutes(e.end) - timeToMinutes(e.start));
+        });
+        (document.getElementById('summaryDate')||{}).textContent = selectedDate.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+        const DOTS = { blue: '#328df3', yellow: '#ffb62a', purple: '#7659e8', red: '#eb5663' };
+        let html = '';
+        let tn = 0, tm = 0;
+        Object.keys(groups).forEach(function(k) {
+            const g = groups[k];
+            tn += g.n; tm += g.m;
+            html += '<div class="min-h-[39px] grid grid-cols-[12px_1fr_25px_50px] items-center gap-[7px] border-b border-[#edf2f7]">' +
+                '<span class="w-2 h-2 rounded-full" style="background: ' + DOTS[g.c] + ';"></span>' +
+                '<span class="text-[#2d5a96] text-[11px]">' + k + '</span>' +
+                '<strong class="text-[#123f8d] text-[11px] text-center">' + g.n + '</strong>' +
+                '<b class="text-[#123f8d] text-[10px] text-right">' + formatDuration(g.m) + '</b></div>';
+        });
+        html += '<div class="min-h-[43px] grid items-center gap-[7px] bg-[#f5f9fd] rounded-lg mt-2 px-2" style="grid-template-columns: 1fr 25px 50px;">' +
+            '<strong class="text-[#123f8d] text-[11px]">Total</strong>' +
+            '<strong class="text-[#123f8d] text-[11px] text-center">' + tn + '</strong>' +
+            '<strong class="text-[#123f8d] text-[11px] text-right">' + formatDuration(tm) + '</strong></div>';
+        (document.getElementById('summaryList')||{innerHTML:''}).innerHTML = html || '<p class="text-[#6d8eb5] text-[12px]">No events this day.</p>';
+    }
+    function formatDuration(m) {
+        const h = Math.floor(m / 60), mm = m % 60;
+        if (!h) return mm + 'm';
+        if (!mm) return h + 'h';
+        return h + 'h ' + mm + 'm';
+    }
+
+    // MINI CALENDAR
+    let calOffset = 0;
+    window.changeMonth = undefined;
+    document.getElementById('prevMonth').addEventListener('click', function() { calOffset--; renderMini(); });
+    document.getElementById('nextMonth').addEventListener('click', function() { calOffset++; renderMini(); });
+    function renderMini() {
+        const base = new Date(today.getFullYear(), today.getMonth() + calOffset, 1);
+        const y = base.getFullYear(), m = base.getMonth();
+        document.getElementById('monthName').textContent = MONTHS[m] + ' ' + y;
+        const first = (new Date(y, m, 1).getDay() + 6) % 7;
+        const days = new Date(y, m + 1, 0).getDate();
+        const prevDays = new Date(y, m, 0).getDate();
+        const box = document.getElementById('calendarDays');
+        box.innerHTML = '';
+        for (let i = first - 1; i >= 0; i--) {
+            const s = document.createElement('span');
+            s.className = 'w-[29px] h-[29px] flex items-center justify-center m-auto text-[#a5b8d0] text-[11px] rounded-full';
+            s.textContent = prevDays - i;
+            box.appendChild(s);
+        }
+        for (let d = 1; d <= days; d++) {
+            const s = document.createElement('span');
+            const isSel = !calOffset && d === today.getDate();
+            s.className = 'w-[29px] h-[29px] flex items-center justify-center m-auto text-[11px] rounded-full cursor-pointer ' + (isSel ? 'text-white font-extrabold' : 'text-[#315b96]');
+            if (isSel) s.style.background = 'linear-gradient(135deg, #3b94fb, #2e81e9)';
+            s.textContent = d;
+            s.addEventListener('click', function() {
+                selectedDate = new Date(y, m, d);
+                renderWeek();
+                renderSummary();
+                box.querySelectorAll('span').forEach(function(x) { x.style.background = ''; });
+            });
+            box.appendChild(s);
+        }
+        const total = first + days;
+        const next = (7 - (total % 7)) % 7;
+        for (let d = 1; d <= next; d++) {
+            const s = document.createElement('span');
+            s.className = 'w-[29px] h-[29px] flex items-center justify-center m-auto text-[#a5b8d0] text-[11px] rounded-full';
+            s.textContent = d;
+            box.appendChild(s);
+        }
+    }
+
+    // CONTROLS
+
+    // SEARCH
+    const searchInput = document.getElementById('searchInput');
+    if (searchInput) {
+        searchInput.addEventListener('input', function() {
+            const q = this.value.toLowerCase().trim();
+            document.querySelectorAll('#calendarGrid [data-event]').forEach(function(el) {
+                el.style.opacity = (!q || el.getAttribute('data-event').toLowerCase().includes(q)) ? '1' : '0.15';
+            });
+        });
+    }
+
+    // ADD TODAY MODAL
+    const todayModal = document.getElementById('todayModal');
+    function showTodayModal(show) {
+        todayModal.classList.toggle('hidden', !show);
+        todayModal.classList.toggle('flex', show);
+    }
+    todayModal.querySelectorAll('[data-close]').forEach(function(b) {
+        b.addEventListener('click', function() { showTodayModal(false); });
+    });
+    todayModal.addEventListener('click', function(e) { if (e.target === todayModal) showTodayModal(false); });
+    const editModal = document.getElementById('editModal');
+    function showEditModal(show) {
+        editModal.classList.toggle('hidden', !show);
+        editModal.classList.toggle('flex', show);
+    }
+    editModal.querySelectorAll('[data-close]').forEach(function(b) {
+        b.addEventListener('click', function() { showEditModal(false); });
+    });
+    editModal.addEventListener('click', function(e) { if (e.target === editModal) showEditModal(false); });
+    document.getElementById('saveEdit').addEventListener('click', function() {
+        const id = document.getElementById('editId').value;
+        const kind = document.getElementById('editKind').value;
+        const name = document.getElementById('editName').value.trim();
+        const st = document.getElementById('editStart').value;
+        const en = document.getElementById('editEnd').value;
+        if (!name || !st || !en) { showToast('Please complete all fields.'); return; }
+        if (timeToMinutes(en) <= timeToMinutes(st)) { showToast('End time must be later than start time.'); return; }
+        if (kind === 'today') {
+            let arr = [];
+            try { arr = JSON.parse(localStorage.getItem('eb_today_schedules') || '[]'); } catch (e) { arr = []; }
+            arr = arr.map(function(x) { return String(x.id) === String(id) ? { id: x.id, date: x.date, name: name, startTime: st, endTime: en } : x; });
+            localStorage.setItem('eb_today_schedules', JSON.stringify(arr));
+        } else {
+            const edits = getEdits();
+            edits[id] = { name: name, start: st, end: en };
+            localStorage.setItem('eb_edits', JSON.stringify(edits));
+        }
+        showEditModal(false);
+        showToast('Schedule updated.', true);
+        renderWeek();
+        renderSummary();
+        renderEditPanel();
+    });
+    document.getElementById('saveToday').addEventListener('click', function() {
+        const name = document.getElementById('todayName').value.trim();
+        const st = document.getElementById('todayStart').value;
+        const en = document.getElementById('todayEnd').value;
+        if (!name || !st || !en) { showToast('Please complete all schedule details.'); return; }
+        if (timeToMinutes(en) <= timeToMinutes(st)) { showToast('End time must be later than start time.'); return; }
+        let all = [];
+        try { all = JSON.parse(localStorage.getItem('eb_today_schedules') || '[]'); } catch (e) { all = []; }
+        all.push({ id: Date.now(), date: isoOf(selectedDate), name: name, startTime: st, endTime: en });
+        localStorage.setItem('eb_today_schedules', JSON.stringify(all));
+        document.getElementById('todayName').value = '';
+        showTodayModal(false);
+        renderWeek();
+        renderSummary();
+    });
+    document.getElementById('addActivity').addEventListener('click', function() { showTodayModal(true); });
+    document.getElementById('editSchedule').addEventListener('click', function() {
+        const panel = document.getElementById('editPanel');
+        const opening = panel.classList.contains('hidden');
+        if (opening) { renderEditPanel(); panel.classList.remove('hidden'); panel.classList.add('flex'); }
+        else { panel.classList.add('hidden'); panel.classList.remove('flex'); }
+    });
+    document.getElementById('closeEditPanel').addEventListener('click', function() { const p = document.getElementById('editPanel'); p.classList.add('hidden'); p.classList.remove('flex'); });
+    document.getElementById('editPanel').addEventListener('click', function(e) { if (e.target === this) { this.classList.add('hidden'); this.classList.remove('flex'); } });
+
+    // PROFILE
+    const profileBtn = document.getElementById('profileBtn');
+    if (profileBtn) profileBtn.addEventListener('click', function() { showToast('Profile menu', true); });
+
+    // NAV ACTIVE (visual only)
+    document.querySelectorAll('.sidebar-nav .nav-item').forEach(function(item) {
+        item.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            if (!href || href === '#') e.preventDefault();
+            document.querySelectorAll('.sidebar-nav .nav-item').forEach(function(n) { n.classList.remove('active'); });
+            this.classList.add('active');
+        });
+    });
+
+    renderWeek();
+    renderSummary();
+    renderMini();
+
+    // DEEP ACTION from dashboard buttons (?action=add|edit)
+    (function() {
+        let action = '';
+        try { action = new URLSearchParams(window.location.search).get('action') || ''; } catch (e) { action = ''; }
+        if (action !== 'add' && action !== 'edit') return;
+        try { window.history.replaceState({}, '', window.location.pathname); } catch (e) {}
+        if (action === 'add') document.getElementById('addActivity').click();
+        if (action === 'edit') document.getElementById('editSchedule').click();
+    })();
+})();
+</script>
+</body>
+</html>
