@@ -6,6 +6,7 @@ $DB_HOST = '127.0.0.1';
 $DB_NAME = 'estudyante_balanse';
 $DB_USER = 'root';
 $DB_PASS = '';
+$GROQ_KEY = 'GROQ_KEY_REMOVED'; // Groq API key (gsk_...) — sa console.groq.com
 
 try {
     $pdo = new PDO(

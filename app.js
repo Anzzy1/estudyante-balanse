@@ -11,8 +11,8 @@ function submitName() {
     const input = document.getElementById('nameInput');
     const name = input ? input.value.trim() : '';
     if (!name) {
-        showToast('Please enter your name first.');
         if (input) input.focus();
+        showToast('Please enter your name first.');
         return;
     }
     localStorage.setItem('userName', name);
@@ -394,8 +394,43 @@ document.addEventListener('DOMContentLoaded', function() {
 // ============ BACKEND (XAMPP) ============
 const API_BASE = 'api/';
 
+// Track last focused input para dito lumabas ang error message
+let lastInput = null;
+document.addEventListener('focusin', function(e) {
+    if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT')) lastInput = e.target;
+});
+document.addEventListener('input', function(e) {
+    document.querySelectorAll('.eb-inline-err').forEach(function(el) { el.textContent = ''; if (el._target) el._target.style.borderColor = ''; });
+});
+function inlineError(msg) {
+    const li = lastInput || (document.activeElement && document.activeElement.tagName === 'INPUT' ? document.activeElement : null);
+    if (!li) return;
+    lastInput = li;
+    // kunin ang outer wrapper (may border) kung meron, para doon lumabas ang error
+    let target = li;
+    const p = li.parentElement;
+    if (p && (String(p.className).indexOf('border') >= 0)) target = p;
+
+    let el = document.querySelector('.eb-inline-err');
+    if (!el) {
+        el = document.createElement('div');
+        el.className = 'eb-inline-err';
+        el.style.cssText = 'color:#e74c3c;font-size:12px;font-weight:700;margin-top:6px;';
+    }
+    target.insertAdjacentElement('afterend', el);
+    target.style.borderColor = '#e74c3c';
+    el._target = target;
+    el.textContent = msg;
+    clearTimeout(el._t);
+    el._t = setTimeout(function() { el.textContent = ''; if (el._target) el._target.style.borderColor = ''; }, 3500);
+}
+
 // Inline toast (kapalit ng alert dialog)
 function showToast(text, isError) {
+    if (isError !== false && lastInput) {
+        inlineError(text);
+        return;
+    }
     let t = document.getElementById('eb-toast');
     if (!t) {
         t = document.createElement('div');
@@ -459,11 +494,16 @@ async function doLogin() {
     if (!data.success) { showToast(data.error || 'Login failed.'); return; }
     localStorage.setItem('eb_user', JSON.stringify(data.user));
     localStorage.setItem('userName', data.user.name);
-    window.location.href = 'dashboard.html';
+    window.location.href = (data.setupDone === false) ? 'setup.html' : 'dashboard.html';
 }
 
 function logout() {
     localStorage.removeItem('eb_user');
+    localStorage.removeItem('eb_setup');
+    localStorage.removeItem('eb_today_schedules');
+    localStorage.removeItem('userName');
+    localStorage.removeItem('eb_deleted');
+    localStorage.removeItem('eb_edits');
     window.location.href = 'index.html';
 }
 

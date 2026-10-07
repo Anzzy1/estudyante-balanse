@@ -3,6 +3,7 @@
 // GET  ?action=list&user_id=1        -> subjects, commitments, today, preferences
 // POST ?action=save   { user_id, subjects[], commitments[], preferences{} }
 // POST ?action=today  { user_id, date, name, start, end }
+// POST ?action=update_today { user_id, id, name, start, end }
 // POST ?action=delete { user_id, kind, id }   (kind: subject|commitment|today)
 require __DIR__ . '/config.php';
 
@@ -19,9 +20,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && $action === 'list') {
     $prefs = $pdo->prepare('SELECT level, job, priorities, study_time, task_time FROM preferences WHERE user_id = ?');
     $prefs->execute([$uid]);
     out(['success' => true, 'data' => [
-        'subjects' => $q('SELECT id, name, start_time AS start, end_time AS `end`, days, color FROM subjects WHERE user_id = ?'),
-        'commitments' => $q('SELECT id, name, start_time AS start, end_time AS `end`, days, icon FROM commitments WHERE user_id = ?'),
-        'today' => $q('SELECT id, sched_date AS date, name, start_time AS start, end_time AS `end` FROM today_schedules WHERE user_id = ?'),
+        'subjects' => $q('SELECT id, name, start_time AS start, end_time AS `end`, days, color FROM subjects WHERE user_id = ? ORDER BY id'),
+        'commitments' => $q('SELECT id, name, start_time AS start, end_time AS `end`, days, icon FROM commitments WHERE user_id = ? ORDER BY id'),
+        'today' => $q('SELECT id, sched_date AS date, name, start_time AS start, end_time AS `end` FROM today_schedules WHERE user_id = ? ORDER BY sched_date, start_time'),
         'preferences' => $prefs->fetch(PDO::FETCH_ASSOC) ?: null,
     ]]);
 }
@@ -62,6 +63,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $action === 'today') {
     $pdo->prepare('INSERT INTO today_schedules (user_id, sched_date, name, start_time, end_time) VALUES (?, ?, ?, ?, ?)')
         ->execute([$uid, $d['date'], $d['name'], $d['start'], $d['end']]);
     out(['success' => true, 'id' => (int) $pdo->lastInsertId()]);
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && $action === 'update_today') {
+    $d = body();
+    if (empty($d['id']) || empty($d['name']) || empty($d['start']) || empty($d['end'])) {
+        out(['success' => false, 'error' => 'Kumpletuhin ang details.'], 400);
+    }
+    $pdo->prepare('UPDATE today_schedules SET name = ?, start_time = ?, end_time = ? WHERE id = ? AND user_id = ?')
+        ->execute([$d['name'], $d['start'], $d['end'], (int) $d['id'], $uid]);
+    out(['success' => true]);
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $action === 'delete') {

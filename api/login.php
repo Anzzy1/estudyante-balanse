@@ -19,4 +19,7 @@ if (!$user || !password_verify($pass, $user['password'])) {
 }
 
 unset($user['password']);
-out(['success' => true, 'user' => $user]);
+$s = $pdo->prepare('SELECT COUNT(*) AS c FROM subjects WHERE user_id = ?');
+$s->execute([$user['id']]);
+$setupDone = (int) $s->fetch(PDO::FETCH_ASSOC)['c'] > 0;
+out(['success' => true, 'user' => $user, 'setupDone' => $setupDone]);

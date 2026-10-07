@@ -70,7 +70,7 @@
             <div class="grid grid-cols-1 xl:grid-cols-[minmax(0,2.05fr)_minmax(370px,1fr)] gap-[18px] mb-[18px]">
 
                 <!-- AI SUGGESTION CARD -->
-                <section class="relative min-h-[280px] rounded-[18px] overflow-hidden flex items-stretch shadow-[0_10px_35px_rgba(38,107,180,.07)]" id="aiHero" style="background: url('images/ai-suggestion_bg.png') center / cover no-repeat, linear-gradient(135deg, #e2f3ff 0%, #f5fbff 45%, #eef1ff 100%); isolation: isolate;">
+                <section class="relative min-h-[230px] rounded-[18px] overflow-hidden flex items-stretch shadow-[0_10px_35px_rgba(38,107,180,.07)]" id="aiHero" style="background: url('images/ai-suggestion_bg.png') center / cover no-repeat, linear-gradient(135deg, #e2f3ff 0%, #f5fbff 45%, #eef1ff 100%); isolation: isolate;">
                     <div class="absolute w-[300px] h-[300px] rounded-full pointer-events-none" style="right: 120px; top: -180px; background: radial-gradient(circle, rgba(255,255,255,.8), rgba(255,255,255,0));"></div>
                     <div class="relative z-[5] p-[25px] w-[58%] flex flex-col justify-center">
                         <div class="inline-flex items-center gap-2 px-[15px] py-[7px] rounded-[30px] text-white text-[13px] font-bold shadow-[0_5px_15px_rgba(45,140,255,.18)] self-start" style="background: linear-gradient(135deg, #2d8cff, #398cf1);">
@@ -80,29 +80,31 @@
                         <h1 class="mt-[14px] mb-[10px] text-[#124a98] text-[30px] leading-[1.13] font-extrabold tracking-[-0.4px]" id="aiTitle">You have some free time!</h1>
                         <p class="text-[#5276aa] text-[15px] leading-[1.5] font-semibold max-w-[480px] mb-[15px]" id="aiDescription">Nova is checking your schedule to find the best thing for you.</p>
                         <button type="button" class="inline-flex items-center gap-[10px] px-5 py-[13px] border-none rounded-[30px] text-white text-[14px] font-bold cursor-pointer transition-all hover:-translate-y-0.5 shadow-[0_7px_18px_rgba(47,133,237,.25)] self-start" id="focusButton" style="background: linear-gradient(135deg, #368fff, #4388e8);">
-                            <span class="text-[12px]">▶</span><span>Start Focus Session</span><span class="text-[18px] ml-0.5">→</span>
+                            <span class="text-[12px]">▶</span><span>Start Focus Session</span>
                         </button>
                     </div>
-                    
+                    <div class="relative z-[5] flex items-center justify-center p-[18px] w-[38%]">
+                        <img id="aiEnergyComic" src="images/eb_batt_comic_50.png" alt="Your energy today" class="h-[250px] w-auto object-contain" style="object-position: bottom; transform: scale(1.08) translateY(9px); transform-origin: bottom center;">
+                    </div>
                 </section>
 
                 <!-- STATS GRID -->
                 <section class="grid grid-cols-2 gap-[17px]">
-                    <div class="min-h-[133px] rounded-[17px] p-[17px] flex items-start gap-4 shadow-[0_7px_17px_rgba(50,100,160,.06)]" style="background: linear-gradient(135deg, #edf6ff, #e6f2ff);">
-                        <div class="w-[54px] h-[54px] flex-none flex items-center justify-center rounded-full text-white" style="background: linear-gradient(135deg, #4da1ff, #267ee8);"><svg width="27" height="27" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21z"/><path d="M4 5.5V21M8 7h8M8 11h8"/></svg></div>
-                        <div class="flex flex-col min-w-0"><span class="text-[14px] font-bold text-[#16468e]">Classes</span><span class="text-[12px] text-[#5e7ea9] -mt-0.5">today</span><strong class="text-[25px] leading-none mt-[15px] font-extrabold text-[#1456a5]" id="classesCount">0</strong></div>
+                    <div class="min-h-[133px] rounded-[17px] p-[17px] flex items-start gap-4" style="background: linear-gradient(135deg, #3d9bf4, #2b7de0); box-shadow: 0 4px 14px rgba(61,155,244,.35);">
+                        <div class="w-[54px] h-[54px] flex-none flex items-center justify-center rounded-full text-white bg-white/25"><svg width="27" height="27" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21z"/><path d="M4 5.5V21M8 7h8M8 11h8"/></svg></div>
+                        <div class="flex flex-col min-w-0"><span class="text-[14px] font-bold text-white">Classes</span><span class="text-[12px] text-white/80 -mt-0.5">today</span><strong class="text-[25px] leading-none mt-[15px] font-extrabold text-white" id="classesCount">0</strong></div>
                     </div>
-                    <div class="min-h-[133px] rounded-[17px] p-[17px] flex items-start gap-4 shadow-[0_7px_17px_rgba(50,100,160,.06)]" style="background: linear-gradient(135deg, #e8f9f5, #def5f1);">
-                        <div class="w-[54px] h-[54px] flex-none flex items-center justify-center rounded-full text-white" style="background: linear-gradient(135deg, #38c6ad, #17aa92);"><svg width="27" height="27" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="M12 7v5l3 2"/></svg></div>
-                        <div class="flex flex-col min-w-0"><span class="text-[14px] font-bold text-[#16468e]">Free Time</span><span class="text-[12px] text-[#5e7ea9] -mt-0.5">today</span><strong class="text-[25px] leading-none mt-[15px] font-extrabold text-[#16a38d]" id="freeTime">0h</strong></div>
+                    <div class="min-h-[133px] rounded-[17px] p-[17px] flex items-start gap-4" style="background: linear-gradient(135deg, #2fd4a7, #14b886); box-shadow: 0 4px 14px rgba(20,184,134,.35);">
+                        <div class="w-[54px] h-[54px] flex-none flex items-center justify-center rounded-full text-white bg-white/25"><svg width="27" height="27" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="M12 7v5l3 2"/></svg></div>
+                        <div class="flex flex-col min-w-0"><span class="text-[14px] font-bold text-white">Free Time</span><span class="text-[12px] text-white/80 -mt-0.5">today</span><strong class="text-[25px] leading-none mt-[15px] font-extrabold text-white" id="freeTime">0h</strong></div>
                     </div>
-                    <div class="min-h-[133px] rounded-[17px] p-[17px] flex items-start gap-4 shadow-[0_7px_17px_rgba(50,100,160,.06)]" style="background: linear-gradient(135deg, #f3efff, #eeeaff);">
-                        <div class="w-[54px] h-[54px] flex-none flex items-center justify-center rounded-full text-white" style="background: linear-gradient(135deg, #8870f4, #6c52dd);"><svg width="27" height="27" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="12" rx="2"/><path d="M8 8V6h8v2M3 12h18"/><path d="M10 12v2h4v-2"/></svg></div>
-                        <div class="flex flex-col min-w-0"><span class="text-[14px] font-bold text-[#16468e]">Commitments</span><span class="text-[12px] text-[#5e7ea9] -mt-0.5">today</span><strong class="text-[25px] leading-none mt-[15px] font-extrabold text-[#7159dc]" id="commitmentCount">0</strong></div>
+                    <div class="min-h-[133px] rounded-[17px] p-[17px] flex items-start gap-4" style="background: linear-gradient(135deg, #8b5cf6, #6d3fd4); box-shadow: 0 4px 14px rgba(139,92,246,.35);">
+                        <div class="w-[54px] h-[54px] flex-none flex items-center justify-center rounded-full text-white bg-white/25"><svg width="27" height="27" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="12" rx="2"/><path d="M8 8V6h8v2M3 12h18"/><path d="M10 12v2h4v-2"/></svg></div>
+                        <div class="flex flex-col min-w-0"><span class="text-[14px] font-bold text-white">Commitments</span><span class="text-[12px] text-white/80 -mt-0.5">today</span><strong class="text-[25px] leading-none mt-[15px] font-extrabold text-white" id="commitmentCount">0</strong></div>
                     </div>
-                    <div class="min-h-[133px] rounded-[17px] p-[17px] flex items-start gap-4 shadow-[0_7px_17px_rgba(50,100,160,.06)]" style="background: linear-gradient(135deg, #fff8e6, #fff3d5);">
-                        <div class="w-[54px] h-[54px] flex-none flex items-center justify-center rounded-full text-white" style="background: linear-gradient(135deg, #ffbd32, #f3a00f);"><svg width="27" height="27" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1"/></svg></div>
-                        <div class="flex flex-col min-w-0"><span class="text-[14px] font-bold text-[#16468e]">Focus Goal</span><span class="text-[12px] text-[#5e7ea9] -mt-0.5">study time</span><strong class="text-[25px] leading-none mt-[15px] font-extrabold text-[#e99a10]" id="focusGoal">1 hr</strong></div>
+                    <div class="min-h-[133px] rounded-[17px] p-[17px] flex items-start gap-4" style="background: linear-gradient(135deg, #ffc93c, #ff9f1c); box-shadow: 0 4px 14px rgba(255,159,28,.35);">
+                        <div class="w-[54px] h-[54px] flex-none flex items-center justify-center rounded-full text-white bg-white/25"><svg width="27" height="27" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1"/></svg></div>
+                        <div class="flex flex-col min-w-0"><span class="text-[14px] font-bold text-white">Focus Goal</span><span class="text-[12px] text-white/80 -mt-0.5">study time</span><strong class="text-[25px] leading-none mt-[15px] font-extrabold text-white" id="focusGoal">1 hr</strong></div>
                     </div>
                 </section>
             </div>
@@ -110,7 +112,7 @@
             <!-- MIDDLE ROW: schedule + recommended -->
             <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1.18fr)_minmax(430px,0.82fr)] gap-[18px] mt-[18px] mb-[25px]">
                 <!-- TODAY'S SCHEDULE CARD -->
-                <section class="bg-white border border-[#e7eff8] rounded-[18px] shadow-[0_10px_35px_rgba(38,107,180,.07)] p-5 flex flex-col">
+                <section class="bg-white border-none rounded-[18px] shadow-[0_14px_45px_rgba(38,107,180,.18)] p-5 flex flex-col">
                     <div class="flex items-center justify-between mb-[18px]">
                         <div class="flex items-center gap-[13px]">
                             <span class="w-[35px] h-[35px] flex items-center justify-center text-[#114b9e]"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="16" rx="2"/><path d="M8 3v4M16 3v4M4 9h16"/><path d="M8 13h3M8 17h3M14 13h2"/></svg></span>
@@ -119,7 +121,7 @@
                         <a href="schedule.html" class="flex items-center gap-[7px] text-[#0675ee] text-[13px] font-semibold">View full schedule <span class="flex items-center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14" /><path d="M13 6l6 6-6 6" /></svg></span></a>
                     </div>
                     <div id="scheduleList" class="flex-1"></div>
-                    <div class="flex gap-2 px-[18px] mt-auto pb-5">
+                    <div class="flex gap-2 px-[18px] mt-auto pt-[22px] pb-5">
                         <button type="button" class="flex-1 relative overflow-hidden min-h-[60px] flex items-center gap-2 px-4 py-2 border-none rounded-[15px] text-white text-left transition-all hover:-translate-y-0.5 cursor-pointer shadow-[0_8px_22px_rgba(49,136,237,.18)]" id="addTodayButton" style="background: linear-gradient(120deg, #398fff, #55a3ff);">
                             <div class="relative z-[2] w-[38px] h-[38px] flex-none flex items-center justify-center rounded-[11px] bg-white/20"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="16" rx="2"/><path d="M8 3v4M16 3v4M4 9h16"/><path d="M12 12v6M9 15h6"/></svg></div>
                             <div class="relative z-[2] flex-1"><strong class="block text-[13px] leading-[1.2]">Add Schedule for Today</strong><span class="block mt-0.5 text-[10px] opacity-90">Add something only for today</span></div>
@@ -134,7 +136,7 @@
                 </section>
 
                 <!-- RECOMMENDED CARD -->
-                <section class="bg-white border border-[#e7eff8] rounded-[18px] shadow-[0_10px_35px_rgba(38,107,180,.07)] p-5 h-[420px] flex flex-col">
+                <section class="bg-white border-none rounded-[18px] shadow-[0_14px_45px_rgba(38,107,180,.18)] p-5 h-[420px] flex flex-col">
                     <div class="flex items-center justify-between mb-[18px]">
                         <div class="flex items-center gap-[13px]">
                             <span class="text-[27px] text-[#124b9d]">✦</span>
@@ -169,11 +171,48 @@
 </div>
 
 <script>
-(function() {
+(async function() {
+    const ldb = document.createElement('div');
+    ldb.style.cssText = 'position:fixed;inset:0;z-index:9998;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.55);';
+    ldb.innerHTML = '<div style="width:38px;height:38px;border:4px solid #c9e2ff;border-top-color:#3188ed;border-radius:50%;animation:ebspin .8s linear infinite"></div><style>@keyframes ebspin{to{transform:rotate(360deg)}}</style>';
+    document.body.appendChild(ldb);
+    // LOAD DATA: fresh from DB, fallback sa localStorage cache
+    const ebUserD = (function() { try { return JSON.parse(localStorage.getItem('eb_user') || 'null'); } catch (e) { return null; } })();
+    if (ebUserD && ebUserD.id) {
+        try {
+            const r = await fetch('api/schedules.php?action=list&user_id=' + ebUserD.id);
+            const j = await r.json();
+            if (j && j.success && j.data) {
+                const d = j.data;
+                const prefs = Array.isArray(d.preferences) ? (d.preferences[0] || {}) : (d.preferences || {});
+                localStorage.setItem('eb_setup', JSON.stringify({
+                    name: ebUserD.name || '',
+                    subjects: (d.subjects || []).map(function(s) { return { name: s.name, time: s.start + ' - ' + s.end, days: s.days || '', color: s.color }; }),
+                    commitments: (d.commitments || []).map(function(c) { return { name: c.name, time: c.start + ' - ' + c.end, days: c.days || '', icon: c.icon }; }),
+                    priorities: prefs.priorities ? String(prefs.priorities).split(',').map(function(x) { return x.trim(); }).filter(Boolean) : [],
+                    studyTime: prefs.study_time || '',
+                    taskTime: prefs.task_time || '',
+                    level: prefs.level || '',
+                    job: prefs.job || ''
+                }));
+                localStorage.setItem('eb_today_schedules', JSON.stringify((d.today || []).map(function(t) { return { id: t.id, date: t.date, name: t.name, startTime: t.start, endTime: t.end }; })));
+            }
+        } catch (e) {}
+    }
+    try { ldb.remove(); } catch (e) {}
     // LOAD DATA (flat format ng wizard: time "07:00 - 09:00", days "Mon, Tue")
     let setup = null;
     try { setup = JSON.parse(localStorage.getItem('eb_setup') || 'null'); } catch (e) { setup = null; }
     if (!setup) setup = { subjects: [], commitments: [], priorities: [], studyTime: '', taskTime: '', name: localStorage.getItem('userName') || '' };
+
+    // TOPBAR GREETING: Good Day! <name> (katabi ng date)
+    (function() {
+        let nm = '';
+        try { const u = JSON.parse(localStorage.getItem('eb_user') || 'null'); if (u && u.name) nm = u.name; } catch (e) {}
+        if (!nm) nm = localStorage.getItem('userName') || setup.name || '';
+        const g = document.getElementById('topGreet');
+        if (g) g.innerHTML = '<span class="text-[#ffbd1b] text-[25px] leading-none">☀️</span><span>Good Day! ' + nm + '</span>';
+    })();
 
     const subjects = setup.subjects || [];
     const commitments = setup.commitments || [];
@@ -258,7 +297,13 @@
         todayOnlySchedules.forEach(function(x) { events.push({ start: x.startTime, end: x.endTime, name: x.name, type: 'Today only', icon: '📌', point: 'point-green', item: 'schedule-green' }); });
         return events.sort(function(a, b) { return timeToMinutes(a.start) - timeToMinutes(b.start); });
     }
-    const ITEM_BG = { 'schedule-blue': 'background: #e9f4ff; color: #0d58ae;', 'schedule-yellow': 'background: #fff7df; color: #0e4e9a;', 'schedule-purple': 'background: #f0ecff; color: #0e4e9a;', 'schedule-green': 'background: #e5f7f4; color: #0e4e9a;', 'schedule-red': 'background: #fff0f2; color: #0e4e9a;' };
+    const ITEM_BG = {
+        'schedule-blue': 'background: linear-gradient(135deg, #3d9bf4, #2b7de0); color: #ffffff; box-shadow: 0 4px 14px rgba(61,155,244,.35);',
+        'schedule-yellow': 'background: linear-gradient(135deg, #ffc93c, #ff9f1c); color: #ffffff; box-shadow: 0 4px 14px rgba(255,159,28,.35);',
+        'schedule-purple': 'background: linear-gradient(135deg, #8b5cf6, #6d3fd4); color: #ffffff; box-shadow: 0 4px 14px rgba(139,92,246,.35);',
+        'schedule-green': 'background: linear-gradient(135deg, #2fd4a7, #14b886); color: #ffffff; box-shadow: 0 4px 14px rgba(20,184,134,.35);',
+        'schedule-red': 'background: linear-gradient(135deg, #ff5d73, #e63e56); color: #ffffff; box-shadow: 0 4px 14px rgba(230,62,86,.35);'
+    };
     const PATHS = {
         book: '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path d="M4 5.5V21M8 7h8M8 11h8"/>',
         briefcase: '<rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>',
@@ -303,11 +348,11 @@
             d.innerHTML = '<div class="text-[#5276a9] text-[12px] font-semibold">' + formatTime(item.start) + ' – ' + formatTime(item.end) + '</div>' +
                 '<div class="relative flex justify-center"><span class="w-[9px] h-[9px] rounded-full relative z-[3]" style="background: ' + (POINT[item.point] || POINT['point-blue']) + ';"></span></div>' +
                 '<div class="min-h-[47px] rounded-[13px] ml-[7px] px-[11px] py-2 flex items-center gap-3 relative transition-all hover:translate-x-[3px]" style="' + (ITEM_BG[item.item] || ITEM_BG['schedule-blue']) + '">' +
-                '<div class="w-[31px] h-[31px] flex items-center justify-center flex-none text-[19px]">' + iconFor(item.icon, 23) + '</div>' +
-                '<div class="min-w-0 flex-1 flex flex-col"><strong class="text-[13px] font-bold">' + item.name + '</strong>' +
-                (item.sub ? '<small class="text-[11px] mt-[1px]">' + item.sub + '</small>' : '') + '</div>' +
-                (item.todayId ? '<button class="border-none bg-transparent cursor-pointer text-[#df5a5a] text-[18px]" data-today-del="' + item.todayId + '">×</button>'
-                    : '<span class="text-[11px] mr-[3px]' + (item.item === 'schedule-red' ? ' text-[#ef4d58]' : item.item === 'schedule-purple' ? ' text-[#8065ef]' : ' text-[#1985ed]') + '">' + (item.type || '') + '</span><span class="text-[25px] leading-none text-[#5284bc] ml-auto">›</span>') + '</div>';
+                '<div class="w-[31px] h-[31px] flex items-center justify-center flex-none text-[19px] bg-white/25 rounded-[9px]">' + iconFor(item.icon, 23) + '</div>' +
+                '<div class="min-w-0 flex-1 flex flex-col"><strong class="text-[13px] font-bold text-white">' + item.name + '</strong>' +
+                (item.sub ? '<small class="text-[11px] mt-[1px] text-white/80">' + item.sub + '</small>' : '') + '</div>' +
+                (item.todayId ? '<button class="border-none bg-white/25 hover:bg-white/40 cursor-pointer text-white text-[18px] w-[26px] h-[26px] rounded-full flex items-center justify-center" data-today-del="' + item.todayId + '">×</button>'
+                    : '<span class="text-[11px] mr-[3px] font-bold text-white/90">' + (item.type || '') + '</span><span class="text-[25px] leading-none text-white/70 ml-auto">›</span>') + '</div>';
             box.appendChild(d);
         });
         box.querySelectorAll('[data-today-del]').forEach(function(btn) {
@@ -340,6 +385,32 @@
     document.getElementById('focusGoal').textContent = studyTime;
 
     // ENERGY + AI
+    // ENERGY SIMULATION: drains habang may ginagawa (8h continuous -> 0%), recover pag may break
+    function computeEnergyNow() {
+        const now = new Date();
+        const nowMin = now.getHours() * 60 + now.getMinutes();
+        const busy = [];
+        getEvents().forEach(function(e) {
+            const s = timeToMinutes(e.start), en = timeToMinutes(e.end);
+            if (busy.length && s <= busy[busy.length - 1].e) busy[busy.length - 1].e = Math.max(busy[busy.length - 1].e, en);
+            else busy.push({ s: s, e: en });
+        });
+        let energy = 100, last = busy.length ? busy[0].s : nowMin;
+        for (let i = 0; i < busy.length; i++) {
+            const b = busy[i];
+            if (b.s > last) {
+                const freeDur = Math.min(b.s, nowMin) - last;
+                if (freeDur > 0) energy = Math.min(100, energy + freeDur / 60 * 25);
+            }
+            const busyEnd = Math.min(b.e, nowMin);
+            const bStart = Math.max(b.s, last);
+            if (busyEnd > bStart) energy = Math.max(0, energy - (busyEnd - bStart) / 60 * (100 / 8));
+            last = Math.max(last, busyEnd);
+            if (busyEnd >= nowMin) break;
+        }
+        if (busy.length && nowMin > busy[busy.length - 1].e) energy = Math.min(100, energy + (nowMin - busy[busy.length - 1].e) / 60 * 25);
+        return Math.round(Math.max(0, Math.min(100, energy)));
+    }
     function getEnergyLevel(m) {
         if (m <= 30) return { level: '0% Energy', icon: '🪫', message: 'Your day is packed. Try to find a short break.' };
         if (m <= 60) return { level: '25% Energy', icon: '🪫', message: 'You have very little free time today.' };
@@ -373,13 +444,40 @@
     (function renderAI() {
         const s = generateSuggestion();
         const energy = getEnergyLevel(freeMins);
+        const energyPct = computeEnergyNow();
+        energy.level = energyPct + '% Energy';
+        energy.message = energyPct <= 25 ? 'Your day is draining you. Try to find a break.' : energyPct <= 50 ? 'You are burning through your energy. Rest when you can.' : energyPct <= 75 ? 'You still have decent energy. Keep breaks between activities.' : 'You have plenty of energy today!';
         setText('aiTitle', s.title);
         setText('aiDescription', s.description);
         setText('batteryIcon', energy.icon);
         setText('batteryText', energy.level);
         setText('batteryMessage', energy.message);
         var energyImg = document.getElementById('energyComic'); if (energyImg) energyImg.src = 'images/eb_welcome_comic.png';
-        document.getElementById('focusButton').innerHTML = '<span>▶</span><span>' + s.button + '</span><span>→</span>';
+        var aiComic = document.getElementById('aiEnergyComic');
+        if (aiComic) {
+            var pct = energyPct <= 10 ? 0 : energyPct <= 35 ? 25 : energyPct <= 60 ? 50 : energyPct <= 85 ? 70 : 100;
+            aiComic.src = 'images/eb_batt_comic_' + pct + '.png';
+        }
+        document.getElementById('focusButton').innerHTML = '<span>▶</span><span>' + s.button + '</span>';
+        // REAL AI: Groq via api/ai.php
+        (async function() {
+            const now = new Date();
+            const nowStr = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+            const names = getEvents().map(function(e) { return e.name + ' ' + e.start + '-' + e.end; }).join(', ') || 'nothing scheduled';
+            const nowHour = now.getHours();
+            const timeLabel = (nowHour >= 22 || nowHour < 5) ? 'late night' : (nowHour < 12 ? 'morning' : nowHour < 18 ? 'afternoon' : 'evening');
+            const ctx = 'I am a student. Current time: ' + nowStr + ' (' + timeLabel + '). My energy level right now: ' + energyPct + '%. Education level: ' + (setup.level || 'not specified') + '. Goal/job: ' + (setup.job || 'not specified') + '. Study time preference: ' + (setup.studyTime || 'not specified') + '. Task time preference: ' + (setup.taskTime || 'not specified') + '. My tasks today: ' + names + '. My priorities: ' + (priorities.join(', ') || 'none') + '. Should I study or rest right now? Consider the time and my energy.';
+            try {
+                const u = ebUserD && ebUserD.id ? ebUserD.id : 0;
+                if (!u) return;
+                const resp = await fetch('api/ai.php', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ user_id: u, context: ctx }) });
+                const j = await resp.json();
+                if (j && j.success) {
+                    setText('aiTitle', j.title);
+                    setText('aiDescription', j.description);
+                }
+            } catch (e) {}
+        })();
     })();
 
     // RECOMMENDATIONS (max 3)
@@ -394,23 +492,41 @@
         if (has(/hobb/i)) list.push({ cls: '', icon: '🎮', title: 'Enjoy some hobby time', desc: 'You have room for a personal activity.', btn: 'Do this', btnCls: 'green-button' });
         if (has(/exercise|sports/i)) list.push({ cls: '', icon: '🏃', title: 'Get some movement', desc: 'A short walk can refresh you.', btn: 'Do this', btnCls: 'green-button' });
         if (!list.length) list.push({ cls: '', icon: '✨', title: 'Use your free time wisely', desc: 'Nova found some available time in your day.', btn: 'Do this', btnCls: 'blue-button' });
-        const BTN = { 'blue-button': 'color: #0875e7; background: #dcecff;', 'green-button': 'color: #16a892; background: #d7f2ec;', 'yellow-button': 'color: #e99a0e; background: #ffedc5;' };
-        const ICONBG = { 'blue-button': '#d9ebff', 'green-button': '#d7f2ec', 'yellow-button': '#ffedbd' };
-        const ICONC = { 'blue-button': '#237de4', 'green-button': '#18aa91', 'yellow-button': '#efaa15' };
-        list.slice(0, 3).forEach(function(r) {
+        const CARD_BG = { 'blue-button': 'linear-gradient(135deg, #3d9bf4, #2b7de0)', 'green-button': 'linear-gradient(135deg, #2fd4a7, #14b886)', 'yellow-button': 'linear-gradient(135deg, #ffc93c, #ff9f1c)' };
+        const CARD_SHADOW = { 'blue-button': '0 4px 14px rgba(61,155,244,.35)', 'green-button': '0 4px 14px rgba(20,184,134,.35)', 'yellow-button': '0 4px 14px rgba(255,159,28,.35)' };
+        function renderItems(items) {
+        items.forEach(function(r) {
             const d = document.createElement('div');
-            d.className = 'flex items-center gap-[13px] mx-[15px] mb-[10px] p-3 rounded-[15px] border border-[#e0eefb]';
-            d.style.background = 'linear-gradient(100deg, #f1f7ff, #f9fcff)';
-            d.innerHTML = '<div class="w-[49px] h-[49px] flex-none flex items-center justify-center rounded-full" style="background: ' + ICONBG[r.btnCls] + '; color: ' + ICONC[r.btnCls] + ';">' + iconFor(r.icon, 25) + '</div>' +
-                '<div class="flex-1 min-w-0"><strong class="block text-[#164a94] text-[14px]">' + r.title + '</strong>' +
-                '<p class="text-[#6b8bb4] text-[11px] leading-[1.4]">' + r.desc + '</p></div>' +
-                '<button type="button" class="border-none min-w-[82px] px-3 py-[11px] rounded-[13px] text-[11px] font-bold cursor-pointer" style="' + BTN[r.btnCls] + '">' + r.btn + '</button>';
-            d.querySelector('button').addEventListener('click', function() {
-                if (/break/i.test(r.title)) showToast('Break time! Take some time to rest.', true);
-                else showToast(r.title + ' added to your plan.', true);
-            });
+            d.className = 'flex items-center gap-[13px] mx-[15px] mb-[10px] p-3 rounded-[15px] border-none';
+            d.style.background = CARD_BG[r.btnCls] || CARD_BG['blue-button'];
+            d.style.boxShadow = CARD_SHADOW[r.btnCls] || CARD_SHADOW['blue-button'];
+            d.innerHTML = '<div class="w-[49px] h-[49px] flex-none flex items-center justify-center rounded-full bg-white/25 text-white">' + iconFor(r.icon, 25) + '</div>' +
+                '<div class="flex-1 min-w-0"><strong class="block text-white text-[14px]">' + r.title + '</strong>' +
+                '<p class="text-white/80 text-[11px] leading-[1.4]">' + r.desc + '</p></div>';
             box.appendChild(d);
         });
+        }
+        renderItems(list.slice(0, 3));
+
+        // AI RECOMMENDATIONS (Groq)
+        (async function() {
+            try {
+                const u = ebUserD && ebUserD.id ? ebUserD.id : 0;
+                if (!u) return;
+                const now = new Date();
+                const nowStr = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+                const names = getEvents().map(function(e) { return e.name + ' ' + e.start + '-' + e.end; }).join(', ') || 'nothing scheduled';
+                const ctx = 'I am a student. Current time: ' + nowStr + ' (' + (((now.getHours() >= 22 || now.getHours() < 5)) ? 'late night' : (now.getHours() < 12 ? 'morning' : (now.getHours() < 18 ? 'afternoon' : 'evening'))) + '). Energy: ' + computeEnergyNow() + '%. Tasks today: ' + names + '. Priorities: ' + (priorities.join(', ') || 'none') + '. Give me 3 practical recommendations for right now. Remember: if it is late night, rest and sleep, do not study.';
+                const resp = await fetch('api/ai.php', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ user_id: u, context: ctx, mode: 'recs' }) });
+                const j = await resp.json();
+                if (j && j.success && j.items && j.items.length) {
+                    const btns = ['blue-button', 'green-button', 'yellow-button'];
+                    const aiList = j.items.map(function(x, i) { return { cls: '', icon: '📋', title: x.title, desc: x.desc, btn: x.btn || 'Do this', btnCls: btns[i % 3] }; });
+                    box.innerHTML = '';
+                    renderItems(aiList);
+                }
+            } catch (e) {}
+        })();
     })();
 
     // SEARCH FILTER

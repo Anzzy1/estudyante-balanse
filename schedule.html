@@ -63,7 +63,7 @@
 
                 <!-- CALENDAR AREA -->
                 <section>
-                    <div class="bg-white border border-[#e4edf7] rounded-[17px] shadow-[0_8px_30px_rgba(35,100,170,.07)] overflow-hidden mb-10">
+                    <div class="bg-white border-none rounded-[17px] shadow-[0_14px_45px_rgba(38,107,180,.18)] overflow-hidden mb-10">
                         <!-- CALENDAR HEADER -->
                         <div class="min-h-[92px] px-5 py-[18px] flex flex-wrap items-center justify-between gap-[15px]">
                             <div class="flex items-center gap-[14px]">
@@ -89,7 +89,7 @@
 
                 <!-- EDIT PANEL (center modal, hidden until Edit pressed) -->
                 <div id="editPanel" class="hidden fixed inset-0 z-[200] items-center justify-center p-5" style="background: rgba(5,35,80,.35); backdrop-filter: blur(5px);">
-                <div class="w-[min(640px,100%)] max-h-[85vh] overflow-y-auto bg-white border border-[#e4edf7] rounded-[17px] shadow-[0_25px_70px_rgba(0,0,0,.18)] p-5">
+                <div class="w-[min(640px,100%)] max-h-[85vh] overflow-y-auto bg-white border-none rounded-[17px] shadow-[0_25px_70px_rgba(0,0,0,.18)] p-5">
                     <div class="flex items-center justify-between mb-3">
                         <h2 class="text-[#103f8c] text-[20px] font-extrabold">Edit Full Schedule</h2>
                         <button id="closeEditPanel" type="button" class="h-[38px] px-[18px] border border-[#dceaf8] bg-[#f4f9ff] text-[#0874e9] rounded-[9px] text-[12px] font-bold cursor-pointer hover:bg-[#e8f3ff]">Done</button>
@@ -101,7 +101,7 @@
                 <!-- RIGHT SIDEBAR -->
                 <aside class="flex flex-col gap-[17px]">
                     <!-- MINI CALENDAR -->
-                    <section class="bg-white border border-[#e4edf7] rounded-[17px] shadow-[0_8px_30px_rgba(35,100,170,.07)] p-[17px]">
+                    <section class="bg-white border-none rounded-[17px] shadow-[0_14px_45px_rgba(38,107,180,.18)] p-[17px]">
                         <div class="flex items-center justify-between mb-[15px]">
                             <button class="w-7 h-7 border-none bg-transparent text-[#0874e9] text-[28px] leading-none cursor-pointer" id="prevMonth" type="button">‹</button>
                             <h2 class="text-[#123f8d] text-[18px] font-extrabold" id="monthName">August 2026</h2>
@@ -167,13 +167,58 @@
 </div>
 
 <script>
-(function() {
-    // LOAD DATA (flat wizard format)
+(async function() {
+    // LOAD DATA: DB muna, fallback sa localStorage cache
+    const ebUser = (function() { try { return JSON.parse(localStorage.getItem('eb_user') || 'null'); } catch (e) { return null; } })();
+    const ld = document.createElement('div');
+    ld.style.cssText = 'position:fixed;inset:0;z-index:9998;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.55);';
+    ld.innerHTML = '<div style="width:38px;height:38px;border:4px solid #c9e2ff;border-top-color:#3188ed;border-radius:50%;animation:ebspin .8s linear infinite"></div><style>@keyframes ebspin{to{transform:rotate(360deg)}}</style>';
+    document.body.appendChild(ld);
+    if (ebUser && ebUser.id) {
+        try {
+            const r = await fetch('api/schedules.php?action=list&user_id=' + ebUser.id);
+            const j = await r.json();
+            if (j && j.success && j.data) {
+                const d = j.data;
+                const prefs = Array.isArray(d.preferences) ? (d.preferences[0] || {}) : (d.preferences || {});
+                const setupDb = {
+                    name: ebUser.name || '',
+                    subjects: (d.subjects || []).map(function(s) { return { name: s.name, time: s.start + ' - ' + s.end, days: s.days || '', color: s.color }; }),
+                    commitments: (d.commitments || []).map(function(c) { return { name: c.name, time: c.start + ' - ' + c.end, days: c.days || '', icon: c.icon }; }),
+                    priorities: prefs.priorities ? String(prefs.priorities).split(',').map(function(x) { return x.trim(); }).filter(Boolean) : [],
+                    studyTime: prefs.study_time || '',
+                    taskTime: prefs.task_time || ''
+                };
+                localStorage.setItem('eb_setup', JSON.stringify(setupDb));
+                localStorage.setItem('eb_today_schedules', JSON.stringify((d.today || []).map(function(t) { return { id: t.id, date: t.date, name: t.name, startTime: t.start, endTime: t.end }; })));
+                localStorage.removeItem('eb_deleted');
+                localStorage.removeItem('eb_edits');
+            }
+        } catch (e) {}
+    }
+    try { ld.remove(); } catch (e) {}
     let setup = null;
     try { setup = JSON.parse(localStorage.getItem('eb_setup') || 'null'); } catch (e) { setup = null; }
     if (!setup) setup = { subjects: [], commitments: [], priorities: [], studyTime: '', taskTime: '', name: '' };
 
     function showToast(text, ok) {
+        // inline error sa tabi ng last focused input
+        try {
+            const li = document.activeElement;
+            if (ok !== true && li && (li.tagName === 'INPUT' || li.tagName === 'SELECT')) {
+                let target = li;
+                const p = li.parentElement;
+                if (p && String(p.className).indexOf('border') >= 0) target = p;
+                let el = document.querySelector('.eb-inline-err');
+                if (!el) { el = document.createElement('div'); el.className = 'eb-inline-err'; el.style.cssText = 'color:#e74c3c;font-size:12px;font-weight:700;margin-top:6px;'; }
+                target.insertAdjacentElement('afterend', el);
+                target.style.borderColor = '#e74c3c';
+                el._target = target;
+                el.textContent = text;
+                clearTimeout(el._t); el._t = setTimeout(function() { el.textContent = ''; if (el._target) el._target.style.borderColor = ''; }, 3500);
+                return;
+            }
+        } catch (e) {}
         let t = document.getElementById('eb-toast');
         if (!t) {
             t = document.createElement('div');
@@ -234,13 +279,34 @@
         return { name: c.name, startTime: r[0], endTime: r[1], repeatDays: splitDays(c.days), icon: c.icon || '💼' };
     });
 
+    // SAVE to DB (bulk replace subjects/commitments) + localStorage cache
+    async function persistSetup() {
+        setup.subjects = subjects.map(function(s) { return { name: s.name, time: s.startTime + ' - ' + s.endTime, days: s.repeatDays.join(', '), color: s.color || 'blue' }; });
+        setup.commitments = commitments.map(function(c) { return { name: c.name, time: c.startTime + ' - ' + c.endTime, days: c.repeatDays.join(', '), icon: c.icon || '💼' }; });
+        try { localStorage.setItem('eb_setup', JSON.stringify(setup)); } catch (e) {}
+        if (!ebUser || !ebUser.id) return;
+        try {
+            const resp = await fetch('api/schedules.php?action=save', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    user_id: ebUser.id,
+                    subjects: subjects.map(function(s) { return { name: s.name, start: s.startTime, end: s.endTime, days: s.repeatDays.join(', '), color: s.color || 'blue' }; }),
+                    commitments: commitments.map(function(c) { return { name: c.name, start: c.startTime, end: c.endTime, days: c.repeatDays.join(', '), icon: c.icon || '💼' }; }),
+                    preferences: { level: setup.level || '', job: setup.job || '', priorities: (setup.priorities || []).join ? (setup.priorities || []).join(', ') : (setup.priorities || ''), studyTime: setup.studyTime || '', taskTime: setup.taskTime || '' }
+                })
+            });
+            const sj = await resp.json().catch(function() { return null; });
+            if (sj && sj.success) { try { showToast('Schedule saved!', true); } catch (e) {} }
+            else { try { showToast('Could not save. Check your connection.', false); } catch (e) {} }
+        } catch (e) {}
+    }
+
     // DATE / WEEK STATE (Monday-first)
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
     const D3 = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-    let weekOffset = 0;
-    let viewMode = 'week';
     let selectedDate = new Date(today);
     document.getElementById('currentDate').textContent = today.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
 
@@ -251,7 +317,7 @@
         return d;
     }
     function weekDates() {
-        const mon = mondayOf(new Date(today.getFullYear(), today.getMonth(), today.getDate() + weekOffset * 7));
+        const mon = mondayOf(today);
         const out = [];
         for (let i = 0; i < 7; i++) { const d = new Date(mon); d.setDate(mon.getDate() + i); out.push(d); }
         return out;
@@ -281,13 +347,13 @@
     function durPct(a, b) { return Math.max(0, (timeToMinutes(b) - timeToMinutes(a)) / DAY_SPAN * 100); }
 
     const EV_STYLE = {
-        blue: 'background: #e4f1ff; border-color: #d4e8fb; color: #1761b6;',
-        green: 'background: #dff6f1; border-color: #ccefe8; color: #168e7a;',
-        yellow: 'background: #fff2c9; border-color: #ffebaf; color: #a96c00;',
-        purple: 'background: #eee9ff; border-color: #e3dcff; color: #674ed0;',
-        red: 'background: #ffe1e7; border-color: #ffd2da; color: #d94759;',
-        orange: 'background: #ffeadb; border-color: #ffe0cb; color: #c56d28;',
-        pink: 'background: #ffe1e8; border-color: #ffd4dc; color: #d64e6b;'
+        blue: 'background: linear-gradient(135deg, #3d9bf4, #2b7de0); border-color: transparent; color: #ffffff; box-shadow: 0 4px 14px rgba(61,155,244,.35);',
+        green: 'background: linear-gradient(135deg, #2fd4a7, #14b886); border-color: transparent; color: #ffffff; box-shadow: 0 4px 14px rgba(20,184,134,.35);',
+        yellow: 'background: linear-gradient(135deg, #ffc93c, #ff9f1c); border-color: transparent; color: #ffffff; box-shadow: 0 4px 14px rgba(255,159,28,.35);',
+        purple: 'background: linear-gradient(135deg, #8b5cf6, #6d3fd4); border-color: transparent; color: #ffffff; box-shadow: 0 4px 14px rgba(139,92,246,.35);',
+        red: 'background: linear-gradient(135deg, #ff5d73, #e63e56); border-color: transparent; color: #ffffff; box-shadow: 0 4px 14px rgba(230,62,86,.35);',
+        orange: 'background: linear-gradient(135deg, #ff9a5a, #f2691e); border-color: transparent; color: #ffffff; box-shadow: 0 4px 14px rgba(242,105,30,.35);',
+        pink: 'background: linear-gradient(135deg, #ff7eb3, #e94e8a); border-color: transparent; color: #ffffff; box-shadow: 0 4px 14px rgba(233,78,138,.35);'
     };
     const POINT = { blue: '#4b9cff', yellow: '#ffb72b', purple: '#7961e8', green: '#1ab39b', red: '#ed5964', orange: '#ef9651', pink: '#ef7891' };
     const PATHS = {
@@ -303,25 +369,17 @@
     }
     const SUBJ_COLORS = ['blue', 'green', 'yellow', 'purple'];
 
-    function getDeleted() { try { return JSON.parse(localStorage.getItem('eb_deleted') || '[]'); } catch (e) { return []; } }
-    function getEdits() { try { return JSON.parse(localStorage.getItem('eb_edits') || '{}'); } catch (e) { return {}; } }
     function eventsForDay(d3, dateObj) {
         const out = [];
-        const deleted = getDeleted();
-        const edits = getEdits();
         subjects.forEach(function(s, i) {
             if (!s.repeatDays.includes(d3)) return;
             const eid = 'S' + i;
-            if (deleted.indexOf(eid) >= 0) return;
-            const ov = edits[eid] || {};
-            out.push({ eid: eid, kind: 'fixed', name: ov.name || s.name, start: ov.start || s.startTime, end: ov.end || s.endTime, icon: '📖', color: SUBJ_COLORS[i % SUBJ_COLORS.length], type: 'Class' });
+            out.push({ eid: eid, kind: 'fixed', name: s.name, start: s.startTime, end: s.endTime, icon: '📖', color: SUBJ_COLORS[i % SUBJ_COLORS.length], type: 'Class' });
         });
         commitments.forEach(function(c, j) {
             if (!c.repeatDays.includes(d3)) return;
             const eid = 'C' + j;
-            if (deleted.indexOf(eid) >= 0) return;
-            const ov = edits[eid] || {};
-            out.push({ eid: eid, kind: 'fixed', name: ov.name || c.name, start: ov.start || c.startTime, end: ov.end || c.endTime, icon: c.icon, color: 'red', type: 'Commitment' });
+            out.push({ eid: eid, kind: 'fixed', name: c.name, start: c.startTime, end: c.endTime, icon: c.icon, color: 'red', type: 'Commitment' });
         });
         if (dateObj) {
             todayOnlyFor(isoOf(dateObj)).forEach(function(t) {
@@ -341,7 +399,7 @@
     // RENDER WEEK
     function renderWeek() {
         const dates = weekDates();
-        const showDates = viewMode === 'day' ? [selectedDate] : dates;
+        const showDates = dates;
         const wh = document.getElementById('weekHeader');
         let html = '<div class="w-[55px]"></div>';
         showDates.forEach(function(d) {
@@ -385,8 +443,6 @@
     function renderEditPanel() {
         const box = document.getElementById('editList');
         if (!box) return;
-        const deleted = getDeleted();
-        const edits = getEdits();
         let html = '';
         html += '<div class="bg-[#f7fbff] border-2 border-dashed border-[#c8e1ff] rounded-xl p-3 mb-3">' +
             '<div class="grid grid-cols-2 gap-2 mb-2">' +
@@ -405,15 +461,11 @@
             '<button id="addFixedBtn" class="w-full h-[42px] rounded-xl bg-[#FFD75A] hover:bg-[#FFCA3A] text-[#17243a] font-extrabold cursor-pointer border-none">+ Add to Fixed Schedule</button></div>';
         subjects.forEach(function(s, i) {
             const eid = 'S' + i;
-            if (deleted.indexOf(eid) >= 0) return;
-            const ov = edits[eid] || {};
-            html += editRow(eid, 'fixed', ov.name || s.name, (ov.start || s.startTime) + ' - ' + (ov.end || s.endTime) + ' | ' + s.repeatDays.join(', '));
+            html += editRow(eid, 'fixed', s.name, s.startTime + ' - ' + s.endTime + ' | ' + s.repeatDays.join(', '));
         });
         commitments.forEach(function(c, j) {
             const eid = 'C' + j;
-            if (deleted.indexOf(eid) >= 0) return;
-            const ov = edits[eid] || {};
-            html += editRow(eid, 'fixed', ov.name || c.name, (ov.start || c.startTime) + ' - ' + (ov.end || c.endTime) + ' | ' + c.repeatDays.join(', '));
+            html += editRow(eid, 'fixed', c.name, c.startTime + ' - ' + c.endTime + ' | ' + c.repeatDays.join(', '));
         });
         let all = [];
         try { all = JSON.parse(localStorage.getItem('eb_today_schedules') || '[]'); } catch (e) { all = []; }
@@ -440,15 +492,11 @@
             const fc = schedConflict(newDays, st, en, [[subjects, 'subject'], [commitments, 'commitment']]);
             if (fc) { showToast(fc); return; }
             if (tp === 'subject') {
-                setup.subjects = setup.subjects || [];
-                setup.subjects.push({ name: nm, time: st + ' - ' + en, days: newDays.join(', ') });
                 subjects.push({ name: nm, startTime: st, endTime: en, repeatDays: newDays.slice() });
             } else {
-                setup.commitments = setup.commitments || [];
-                setup.commitments.push({ name: nm, time: st + ' - ' + en, days: newDays.join(', '), icon: 'ðŸ’¼' });
                 commitments.push({ name: nm, startTime: st, endTime: en, repeatDays: newDays.slice(), icon: 'ðŸ’¼' });
             }
-            try { localStorage.setItem('eb_setup', JSON.stringify(setup)); } catch (e) {}
+            persistSetup();
             renderWeek(); renderSummary(); renderEditPanel();
         });
         box.querySelectorAll('[data-pdel]').forEach(function(btn) {
@@ -458,10 +506,12 @@
                     let arr = [];
                     try { arr = JSON.parse(localStorage.getItem('eb_today_schedules') || '[]'); } catch (e) { arr = []; }
                     localStorage.setItem('eb_today_schedules', JSON.stringify(arr.filter(function(x) { return String(x.id) !== String(id); })));
+                    if (ebUser && ebUser.id) { fetch('api/schedules.php?action=delete', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ user_id: ebUser.id, kind: 'today', id: id }) }).catch(function() {}); }
                 } else {
-                    const del = getDeleted();
-                    if (del.indexOf(id) < 0) del.push(id);
-                    localStorage.setItem('eb_deleted', JSON.stringify(del));
+                    const isSub = String(id).charAt(0) === 'S';
+                    const idx = parseInt(String(id).slice(1), 10);
+                    if (isSub) subjects.splice(idx, 1); else commitments.splice(idx, 1);
+                    persistSetup();
                 }
                 showToast('Deleted.', true);
                 renderWeek(); renderSummary(); renderEditPanel();
@@ -478,14 +528,10 @@
                     const found = arr.filter(function(x) { return String(x.id) === String(id); })[0];
                     if (found) cur = { name: found.name, start: found.startTime, end: found.endTime };
                 } else {
-                    const edits = getEdits();
-                    const ov = edits[id] || {};
-                    let base = { name: '', start: '08:00', end: '09:00' };
                     const all = subjects.map(function(s, i) { return { eid: 'S' + i, name: s.name, start: s.startTime, end: s.endTime }; })
                         .concat(commitments.map(function(c, j) { return { eid: 'C' + j, name: c.name, start: c.startTime, end: c.endTime }; }));
-                    const hit = all.filter(function(x) { return x.eid === id; })[0];
-                    if (hit) base = hit;
-                    cur = { name: ov.name || base.name, start: ov.start || base.start, end: ov.end || base.end };
+                    const cur = all.filter(function(x) { return x.eid === id; })[0] || { name: '', start: '08:00', end: '09:00' };
+                    cur = { name: cur.name, start: cur.start, end: cur.end };
                 }
                 document.getElementById('editId').value = id;
                 document.getElementById('editKind').value = kind;
@@ -582,17 +628,6 @@
 
     // CONTROLS
 
-    // SEARCH
-    const searchInput = document.getElementById('searchInput');
-    if (searchInput) {
-        searchInput.addEventListener('input', function() {
-            const q = this.value.toLowerCase().trim();
-            document.querySelectorAll('#calendarGrid [data-event]').forEach(function(el) {
-                el.style.opacity = (!q || el.getAttribute('data-event').toLowerCase().includes(q)) ? '1' : '0.15';
-            });
-        });
-    }
-
     // ADD TODAY MODAL
     const todayModal = document.getElementById('todayModal');
     function showTodayModal(show) {
@@ -643,10 +678,13 @@
             try { arr = JSON.parse(localStorage.getItem('eb_today_schedules') || '[]'); } catch (e) { arr = []; }
             arr = arr.map(function(x) { return String(x.id) === String(id) ? { id: x.id, date: x.date, name: name, startTime: st, endTime: en } : x; });
             localStorage.setItem('eb_today_schedules', JSON.stringify(arr));
+            if (ebUser && ebUser.id) { fetch('api/schedules.php?action=update_today', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ user_id: ebUser.id, id: id, name: name, start: st, end: en }) }).catch(function() {}); }
         } else {
-            const edits = getEdits();
-            edits[id] = { name: name, start: st, end: en };
-            localStorage.setItem('eb_edits', JSON.stringify(edits));
+            const isSub = String(id).charAt(0) === 'S';
+            const idx = parseInt(String(id).slice(1), 10);
+            const src = isSub ? subjects : commitments;
+            if (src[idx]) { src[idx].name = name; src[idx].startTime = st; src[idx].endTime = en; }
+            persistSetup();
         }
         showEditModal(false);
         showToast('Schedule updated.', true);
@@ -654,7 +692,7 @@
         renderSummary();
         renderEditPanel();
     });
-    document.getElementById('saveToday').addEventListener('click', function() {
+    document.getElementById('saveToday').addEventListener('click', async function() {
         const name = document.getElementById('todayName').value.trim();
         const st = document.getElementById('todayStart').value;
         const en = document.getElementById('todayEnd').value;
@@ -664,9 +702,17 @@
         const todSib = todayOnlyFor(isoOf(selectedDate)).map(function(t) { return { id: t.id, name: t.name, start: t.startTime, end: t.endTime, days: [wday] }; });
         const tc = schedConflict([wday], st, en, [[subjects.concat(commitments), 'schedule'], [todSib, 'schedule']]);
         if (tc) { showToast(tc); return; }
+        let newToday = { id: Date.now(), date: isoOf(selectedDate), name: name, startTime: st, endTime: en };
+        if (ebUser && ebUser.id) {
+            try {
+                const r = await fetch('api/schedules.php?action=today', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ user_id: ebUser.id, date: isoOf(selectedDate), name: name, start: st, end: en }) });
+                const j = await r.json();
+                if (j && j.success && j.id) newToday.id = j.id;
+            } catch (e) {}
+        }
         let all = [];
         try { all = JSON.parse(localStorage.getItem('eb_today_schedules') || '[]'); } catch (e) { all = []; }
-        all.push({ id: Date.now(), date: isoOf(selectedDate), name: name, startTime: st, endTime: en });
+        all.push(newToday);
         localStorage.setItem('eb_today_schedules', JSON.stringify(all));
         document.getElementById('todayName').value = '';
         showTodayModal(false);
