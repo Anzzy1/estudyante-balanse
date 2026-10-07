@@ -6,6 +6,19 @@ function saveName(e) {
     }
 }
 
+// Get Started: required name + Enter to continue
+function submitName() {
+    const input = document.getElementById('nameInput');
+    const name = input ? input.value.trim() : '';
+    if (!name) {
+        showToast('Please enter your name first.');
+        if (input) input.focus();
+        return;
+    }
+    localStorage.setItem('userName', name);
+    window.location.href = 'create-account.html';
+}
+
 function togglePassword() {
     const pwd = document.getElementById('passwordInput');
     const btn = document.getElementById('toggleBtn');
@@ -32,6 +45,43 @@ document.addEventListener('DOMContentLoaded', function() {
         const n = localStorage.getItem('userName');
         if (n) welcomeName.textContent = 'Welcome, ' + n + '!';
     }
+
+    // Enter key sa name input = Continue
+    const nameInput = document.getElementById('nameInput');
+    if (nameInput) {
+        nameInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                submitName();
+            }
+        });
+    }
+
+    // Enter key sa login inputs = Login
+    ['loginEmail', 'loginPassword'].forEach(function(id) {
+        const el = document.getElementById(id);
+        if (el) {
+            el.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    doLogin();
+                }
+            });
+        }
+    });
+
+    // Enter key sa register inputs = Create Account
+    ['emailInput', 'passwordInput'].forEach(function(id) {
+        const el = document.getElementById(id);
+        if (el) {
+            el.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    doRegister();
+                }
+            });
+        }
+    });
 
     // OTP: auto-advance like React handleChange
     const otpIds = ['otp-0','otp-1','otp-2','otp-3','otp-4','otp-5'];
@@ -145,6 +195,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const start = document.getElementById('startTime').value;
             const end = document.getElementById('endTime').value;
             if (!subName || !start || !end) { showToast('Fill subject + time'); return; }
+            const subConflict = findConflict(days, start, end, [[subjects, 'subject'], [commitments, 'commitment']]);
+            if (subConflict) { showToast(subConflict); return; }
             const random = colors[Math.floor(Math.random() * colors.length)];
             subjects.push({ id: Date.now(), name: subName, time: start + ' - ' + end, days: days.join(', '), color: random });
             document.getElementById('subName').value = '';
@@ -181,10 +233,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Step 3: commitments (same pattern as subjects)
         let selectedActivity = 'Work / Part-time Job';
         let commitDays = [];
-        let commitments = [
-            { id: 1, name: 'Part-time Job', days: 'Mon, Tue, Thu, Fri', time: '5:00 PM – 10:00 PM', icon: '💼', work: true },
-            { id: 2, name: 'Household Chores', days: 'Saturday', time: '8:00 AM – 10:00 AM', icon: '🏠', work: false }
-        ];
+        let commitments = [];
 
         function fmtTime(v) {
             if (!v) return '';
@@ -263,6 +312,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 const start = document.getElementById('commitStart').value;
                 const end = document.getElementById('commitEnd').value;
                 if (!commitDays.length || !start || !end) { showToast('Pick days + start/end time'); return; }
+                const comConflict = findConflict(commitDays, start, end, [[subjects, 'subject'], [commitments, 'commitment']]);
+                if (comConflict) { showToast(comConflict); return; }
                 commitments.push({ id: Date.now(), name: actName, days: commitDays.join(', '), time: fmtTime(start) + ' – ' + fmtTime(end), icon: '⏰', work: selectedActivity.indexOf('Work') === 0 });
                 document.getElementById('actName').value = '';
                 document.getElementById('commitStart').value = '17:00';
@@ -432,6 +483,46 @@ function to24hs(t) {
 function splitRange24(t) {
     const p = String(t || '').split(/–|-/);
     return [to24hs(p[0] || '08:00'), to24hs(p[1] || '09:00')];
+}
+
+// Days string/array -> ["Mon", ...]
+function normDays(d) {
+    if (!d) return [];
+    if (Array.isArray(d)) return d;
+    return String(d).split(',').map(function(x) { return x.trim().substring(0, 3); }).filter(Boolean);
+}
+
+function toMin(t) {
+    const p = to24hs(t).split(':');
+    return Number(p[0]) * 60 + Number(p[1]);
+}
+
+// [startMin, endMin] mula sa item (time "A - B" o start/end fields)
+function itemRange(it) {
+    if (it.time) {
+        const p = String(it.time).split(/–|-/);
+        return [toMin(p[0]), toMin(p[1])];
+    }
+    return [toMin(it.start), toMin(it.end)];
+}
+
+// '' = walang conflict; may mensahe kung may overlap (excludeId para sa edit)
+function findConflict(daysArr, start, end, lists, excludeId) {
+    const s = toMin(start), e = toMin(end);
+    if (!(e > s)) return 'End time must be later than start time.';
+    for (let i = 0; i < lists.length; i++) {
+        const arr = lists[i][0], label = lists[i][1];
+        for (let j = 0; j < arr.length; j++) {
+            const it = arr[j];
+            if (excludeId && String(it.id) === String(excludeId)) continue;
+            const r = itemRange(it);
+            const sameDay = normDays(it.days).some(function(d) { return daysArr.indexOf(d) >= 0; });
+            if (sameDay && s < r[1] && r[0] < e) {
+                return 'Conflict with "' + it.name + '" (' + label + ').';
+            }
+        }
+    }
+    return '';
 }
 
 // I-save ang eb_setup (localStorage) sa DB gamit ang naka-login na user

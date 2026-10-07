@@ -206,6 +206,25 @@
         const p = t.split(/–|-/).map(function(x) { return x.trim(); });
         return [to24(p[0] || '08:00'), to24(p[1] || '09:00')];
     }
+    // '' = walang conflict; may mensahe kung may overlap (excludeId para sa edit)
+    function schedConflict(daysArr, start, end, lists, excludeId) {
+        const s = timeToMinutes(start), e = timeToMinutes(end);
+        if (!(e > s)) return 'End time must be later than start time.';
+        for (let i = 0; i < lists.length; i++) {
+            const arr = lists[i][0], label = lists[i][1];
+            for (let j = 0; j < arr.length; j++) {
+                const it = arr[j];
+                const iid = it.eid !== undefined ? it.eid : it.id;
+                if (excludeId !== undefined && excludeId !== null && String(iid) === String(excludeId)) continue;
+                const sameDay = splitDays(it.days || it.repeatDays).some(function(d) { return daysArr.indexOf(d) >= 0; });
+                const r0 = timeToMinutes(it.start || it.startTime), r1 = timeToMinutes(it.end || it.endTime);
+                if (sameDay && s < r1 && r0 < e) {
+                    return 'Conflict with "' + it.name + '" (' + label + ').';
+                }
+            }
+        }
+        return '';
+    }
     let subjects = (setup.subjects || []).map(function(s) {
         const r = splitRange(s.time);
         return { name: s.name, startTime: r[0], endTime: r[1], repeatDays: splitDays(s.days) };
@@ -418,6 +437,8 @@
             const st = document.getElementById('newStart').value;
             const en = document.getElementById('newEnd').value;
             if (!nm || !st || !en || !newDays.length) { showToast('Fill name, time, and at least one day.'); return; }
+            const fc = schedConflict(newDays, st, en, [[subjects, 'subject'], [commitments, 'commitment']]);
+            if (fc) { showToast(fc); return; }
             if (tp === 'subject') {
                 setup.subjects = setup.subjects || [];
                 setup.subjects.push({ name: nm, time: st + ' - ' + en, days: newDays.join(', ') });
@@ -599,6 +620,24 @@
         const en = document.getElementById('editEnd').value;
         if (!name || !st || !en) { showToast('Please complete all fields.'); return; }
         if (timeToMinutes(en) <= timeToMinutes(st)) { showToast('End time must be later than start time.'); return; }
+        let ec = '';
+        if (kind === 'today') {
+            let arr0 = [];
+            try { arr0 = JSON.parse(localStorage.getItem('eb_today_schedules') || '[]'); } catch (e) { arr0 = []; }
+            const cur0 = arr0.filter(function(x) { return String(x.id) === String(id); })[0] || {};
+            const wd0 = cur0.date ? D3[new Date(cur0.date + 'T00:00').getDay()] : D3[selectedDate.getDay()];
+            const sib0 = arr0.filter(function(x) { return String(x.id) !== String(id); }).map(function(t) { return { id: t.id, name: t.name, start: t.startTime, end: t.endTime, days: [wd0] }; });
+            ec = schedConflict([wd0], st, en, [[subjects.concat(commitments), 'schedule'], [sib0, 'schedule']]);
+        } else {
+            const isSub = String(id).charAt(0) === 'S';
+            const idx = parseInt(String(id).slice(1), 10);
+            const src = isSub ? subjects : commitments;
+            const cur = src[idx] || { repeatDays: [] };
+            const withEid = src.map(function(x, k) { x.eid = (isSub ? 'S' : 'C') + k; return x; });
+            const other = isSub ? commitments : subjects;
+            ec = schedConflict(cur.repeatDays || [], st, en, [[withEid, isSub ? 'subject' : 'commitment'], [other, isSub ? 'commitment' : 'subject']], id);
+        }
+        if (ec) { showToast(ec); return; }
         if (kind === 'today') {
             let arr = [];
             try { arr = JSON.parse(localStorage.getItem('eb_today_schedules') || '[]'); } catch (e) { arr = []; }
@@ -621,6 +660,10 @@
         const en = document.getElementById('todayEnd').value;
         if (!name || !st || !en) { showToast('Please complete all schedule details.'); return; }
         if (timeToMinutes(en) <= timeToMinutes(st)) { showToast('End time must be later than start time.'); return; }
+        const wday = D3[selectedDate.getDay()];
+        const todSib = todayOnlyFor(isoOf(selectedDate)).map(function(t) { return { id: t.id, name: t.name, start: t.startTime, end: t.endTime, days: [wday] }; });
+        const tc = schedConflict([wday], st, en, [[subjects.concat(commitments), 'schedule'], [todSib, 'schedule']]);
+        if (tc) { showToast(tc); return; }
         let all = [];
         try { all = JSON.parse(localStorage.getItem('eb_today_schedules') || '[]'); } catch (e) { all = []; }
         all.push({ id: Date.now(), date: isoOf(selectedDate), name: name, startTime: st, endTime: en });
