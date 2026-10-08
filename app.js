@@ -479,7 +479,7 @@ async function doRegister() {
         await syncSetupToAPI();
         window.location.href = 'dashboard.html';
     } else {
-        window.location.href = 'verify-email.html';
+        window.location.href = 'welcome.html';
     }
 }
 

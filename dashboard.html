@@ -78,7 +78,7 @@
                             <span>AI Suggestion</span>
                         </div>
                         <h1 class="mt-[14px] mb-[10px] text-[#124a98] text-[30px] leading-[1.13] font-extrabold tracking-[-0.4px]" id="aiTitle">You have some free time!</h1>
-                        <p class="text-[#5276aa] text-[15px] leading-[1.5] font-semibold max-w-[480px] mb-[15px]" id="aiDescription">Nova is checking your schedule to find the best thing for you.</p>
+                        <p class="text-[#5276aa] text-[15px] leading-[1.5] font-semibold max-w-[480px] mb-[15px]" id="aiDescription">Estudyante Balanse is checking your schedule to find the best thing for you.</p>
                         <button type="button" class="inline-flex items-center gap-[10px] px-5 py-[13px] border-none rounded-[30px] text-white text-[14px] font-bold cursor-pointer transition-all hover:-translate-y-0.5 shadow-[0_7px_18px_rgba(47,133,237,.25)] self-start" id="focusButton" style="background: linear-gradient(135deg, #368fff, #4388e8);">
                             <span class="text-[12px]">▶</span><span>Start Focus Session</span>
                         </button>
@@ -427,7 +427,7 @@
     }
     function generateSuggestion() {
         const best = getBestFreeBlock();
-        if (!best) return { title: 'Your schedule is packed today.', description: "Nova couldn't find a good vacant period. Focus on your scheduled activities and remember to give yourself a short break whenever you can.", button: 'View My Schedule' };
+        if (!best) return { title: 'Your schedule is packed today.', description: "Estudyante Balanse couldn't find a good vacant period. Focus on your scheduled activities and remember to give yourself a short break whenever you can.", button: 'View My Schedule' };
         const dur = timeToMinutes(best.end) - timeToMinutes(best.start);
         const has = function(re) { return priorities.some(function(p) { return re.test(p); }); };
         if (has(/study|schoolwork/i)) {
@@ -435,10 +435,10 @@
             return { title: 'You have ' + formatDuration(dur) + ' free!', description: 'Why not review ' + subj + ' for ' + studyTime + '? You have enough vacant time before your next activity.', button: 'Start Focus Session' };
         }
         if (has(/work/i)) return { title: 'You have ' + formatDuration(dur) + ' free!', description: 'You could prepare for your next work commitment or finish an important task before your shift.', button: 'Plan This Time' };
-        if (has(/rest/i)) return { title: 'You have ' + formatDuration(dur) + ' to recharge.', description: 'Nova suggests using this vacant period to rest before your next activity.', button: 'Take a Break' };
+        if (has(/rest/i)) return { title: 'You have ' + formatDuration(dur) + ' to recharge.', description: 'Estudyante Balanse suggests using this vacant period to rest before your next activity.', button: 'Take a Break' };
         if (has(/hobb/i)) return { title: 'You have ' + formatDuration(dur) + ' free!', description: 'This could be a good time to enjoy one of your hobbies before your next commitment.', button: 'Use Free Time' };
         if (has(/exercise|sports/i)) return { title: 'You have ' + formatDuration(dur) + ' free!', description: 'A short walk or exercise session could help refresh you before your next activity.', button: 'Take a Short Exercise' };
-        return { title: 'You have ' + formatDuration(dur) + ' free!', description: 'Nova found a vacant period. You can study, finish schoolwork, rest, or do something you enjoy.', button: 'Plan This Time' };
+        return { title: 'You have ' + formatDuration(dur) + ' free!', description: 'Estudyante Balanse found a vacant period. You can study, finish schoolwork, rest, or do something you enjoy.', button: 'Plan This Time' };
     }
     function setText(id, v) { var el = document.getElementById(id); if (el) el.textContent = v; }
     (function renderAI() {
@@ -447,8 +447,10 @@
         const energyPct = computeEnergyNow();
         energy.level = energyPct + '% Energy';
         energy.message = energyPct <= 25 ? 'Your day is draining you. Try to find a break.' : energyPct <= 50 ? 'You are burning through your energy. Rest when you can.' : energyPct <= 75 ? 'You still have decent energy. Keep breaks between activities.' : 'You have plenty of energy today!';
-        setText('aiTitle', s.title);
-        setText('aiDescription', s.description);
+        // Loading state muna — walang default text na sasapaw
+        setText('aiTitle', 'Estudyante Balanse is thinking...');
+        setText('aiDescription', 'Analyzing your schedule for the best suggestion.');
+        document.getElementById('focusButton').innerHTML = '<span>?</span><span>Thinking...</span>';
         setText('batteryIcon', energy.icon);
         setText('batteryText', energy.level);
         setText('batteryMessage', energy.message);
@@ -458,7 +460,6 @@
             var pct = energyPct <= 10 ? 0 : energyPct <= 35 ? 25 : energyPct <= 60 ? 50 : energyPct <= 85 ? 70 : 100;
             aiComic.src = 'images/eb_batt_comic_' + pct + '.png';
         }
-        document.getElementById('focusButton').innerHTML = '<span>▶</span><span>' + s.button + '</span>';
         // REAL AI: Groq via api/ai.php
         (async function() {
             const now = new Date();
@@ -469,15 +470,22 @@
             const ctx = 'I am a student. Current time: ' + nowStr + ' (' + timeLabel + '). My energy level right now: ' + energyPct + '%. Education level: ' + (setup.level || 'not specified') + '. Goal/job: ' + (setup.job || 'not specified') + '. Study time preference: ' + (setup.studyTime || 'not specified') + '. Task time preference: ' + (setup.taskTime || 'not specified') + '. My tasks today: ' + names + '. My priorities: ' + (priorities.join(', ') || 'none') + '. Should I study or rest right now? Consider the time and my energy.';
             try {
                 const u = ebUserD && ebUserD.id ? ebUserD.id : 0;
-                if (!u) return;
+                if (!u) { useFallback(); return; }
                 const resp = await fetch('api/ai.php', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ user_id: u, context: ctx }) });
                 const j = await resp.json();
                 if (j && j.success) {
                     setText('aiTitle', j.title);
                     setText('aiDescription', j.description);
-                }
-            } catch (e) {}
+                    document.getElementById('focusButton').innerHTML = '<span>▶</span><span>Start Focus Session</span>';
+                } else { useFallback(); }
+            } catch (e) { useFallback(); }
         })();
+        // Fallback lang kapag bagsak ang AI (hindi default na sasapaw)
+        function useFallback() {
+            setText('aiTitle', s.title);
+            setText('aiDescription', s.description);
+            document.getElementById('focusButton').innerHTML = '<span>▶</span><span>' + s.button + '</span>';
+        }
     })();
 
     // RECOMMENDATIONS (max 3)
@@ -491,7 +499,7 @@
         if (has(/rest/i)) list.push({ cls: '', icon: '😌', title: 'Take a proper break', desc: 'Give yourself time to recharge.', btn: 'Do this', btnCls: 'yellow-button' });
         if (has(/hobb/i)) list.push({ cls: '', icon: '🎮', title: 'Enjoy some hobby time', desc: 'You have room for a personal activity.', btn: 'Do this', btnCls: 'green-button' });
         if (has(/exercise|sports/i)) list.push({ cls: '', icon: '🏃', title: 'Get some movement', desc: 'A short walk can refresh you.', btn: 'Do this', btnCls: 'green-button' });
-        if (!list.length) list.push({ cls: '', icon: '✨', title: 'Use your free time wisely', desc: 'Nova found some available time in your day.', btn: 'Do this', btnCls: 'blue-button' });
+        if (!list.length) list.push({ cls: '', icon: '✨', title: 'Use your free time wisely', desc: 'Estudyante Balanse found some available time in your day.', btn: 'Do this', btnCls: 'blue-button' });
         const CARD_BG = { 'blue-button': 'linear-gradient(135deg, #3d9bf4, #2b7de0)', 'green-button': 'linear-gradient(135deg, #2fd4a7, #14b886)', 'yellow-button': 'linear-gradient(135deg, #ffc93c, #ff9f1c)' };
         const CARD_SHADOW = { 'blue-button': '0 4px 14px rgba(61,155,244,.35)', 'green-button': '0 4px 14px rgba(20,184,134,.35)', 'yellow-button': '0 4px 14px rgba(255,159,28,.35)' };
         function renderItems(items) {
@@ -583,9 +591,7 @@
         b.addEventListener('click', function() { window.location.href = 'setup.html'; });
     });
     document.getElementById('focusButton').addEventListener('click', function() {
-        const best = getBestFreeBlock();
-        if (!best) { showToast('Your schedule is packed today. Try to take a short break when possible.'); return; }
-        showToast('Nova suggests using your free time from ' + formatTime(best.start) + ' to ' + formatTime(best.end) + '.', true);
+        window.location.href = 'schedule.html?action=add';
     });
     function getBestFreeBlock() {
         const free = createTimeline().filter(function(i) { return i.free; });

@@ -419,7 +419,7 @@
             const isSel = sameDay(d, selectedDate);
             g += '<div class="relative border-l border-[#edf2f7] ' + (isSel ? 'bg-[#fbfdff] shadow-[inset_0_0_0_1px_#68adff]' : '') + '" style="background-image: repeating-linear-gradient(to bottom, transparent 0, transparent calc(5.88% - 1px), #edf2f7 calc(5.88% - 1px), #edf2f7 5.88%);">';
             eventsForDay(d3, d).forEach(function(e) {
-                g += '<div class="absolute rounded-[9px] overflow-hidden flex flex-col cursor-pointer transition-all hover:scale-[1.025] hover:z-10 hover:shadow-[0_5px_15px_rgba(30,90,160,.15)]" data-event="' + e.name + '" style="left: 5px; right: 5px; top: ' + pct(e.start) + '%; height: ' + durPct(e.start, e.end) + '%; padding: 7px; ' + EV_STYLE[e.color] + '" title="' + e.name + '">' +
+                g += '<div class="absolute rounded-[9px] overflow-hidden flex flex-col transition-all hover:scale-[1.025] hover:z-10 hover:shadow-[0_5px_15px_rgba(30,90,160,.15)]" data-event="' + e.name + '" style="left: 5px; right: 5px; top: ' + pct(e.start) + '%; height: ' + durPct(e.start, e.end) + '%; padding: 7px; ' + EV_STYLE[e.color] + '" title="' + e.name + '">' +
                     '<span class="text-[15px] mb-[2px] leading-none flex">' + iconFor(e.icon, 15, 1.7) + '</span>' +
                     '<strong class="text-[12px] leading-[1.1] font-extrabold">' + e.name + '</strong>' +
                     '<small class="text-[10px] mt-[3px] leading-[1.1] opacity-80">' + formatTime(e.start) + ' - ' + formatTime(e.end) + '</small></div>';
@@ -427,9 +427,6 @@
             g += '</div>';
         });
         grid.innerHTML = g;
-        grid.querySelectorAll('[data-event]').forEach(function(el) {
-            el.addEventListener('click', function() { showToast(el.getAttribute('data-event'), true); });
-        });
     }
 
     // EDIT PANEL (only place where schedules can be changed)
