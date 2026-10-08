@@ -6,7 +6,14 @@ $DB_HOST = '127.0.0.1';
 $DB_NAME = 'estudyante_balanse';
 $DB_USER = 'root';
 $DB_PASS = '';
-$GROQ_KEY = 'GROQ_KEY_REMOVED'; // Groq API key (gsk_...) — sa console.groq.com
+$GROQ_KEY = ''; // Set via api/keys.local.php (gitignored, never commit)
+$__keysFile = __DIR__ . '/keys.local.php';
+if (is_file($__keysFile)) {
+    $__k = include $__keysFile;
+    if (is_array($__k) && !empty($__k['GROQ_KEY'])) $GROQ_KEY = trim((string) $__k['GROQ_KEY']);
+    unset($__k);
+}
+unset($__keysFile);
 
 try {
     $pdo = new PDO(
